@@ -12,6 +12,14 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        primary: "#873afc",
+        secondary: "#f5ba31",
+        black: "#000000",
+      },
+      container: {
+        center: true,
+        padding: "1rem",
       },
     },
   },
