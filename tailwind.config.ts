@@ -10,12 +10,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-
-        primary: "#873afc",
-        secondary: "#f5ba31",
-        black: "#000000",
+        primary: "#1E3A8A", // Deep Blue
+        secondary: "#60A5FA", // Light Blue
+        accent: "#10B981", // Green
+        background: "#FFFFFF", // White
+        text: "#111827", // Dark Gray
+        border: "#D1D5DB", // Light Gray
       },
       container: {
         center: true,

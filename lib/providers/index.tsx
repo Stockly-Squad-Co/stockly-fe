@@ -8,10 +8,15 @@ import { Toaster } from "sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Suspense } from "react";
 import AuthProvider from "./AuthProvider";
+import dynamic from "next/dynamic";
 
 interface Props {
   children: React.ReactNode;
 }
+
+const SmoothScroll = dynamic(() => import("./SmoothScroll"), {
+  ssr: false,
+});
 
 const queryClient = new QueryClient();
 
@@ -28,6 +33,7 @@ const Providers = ({ children }: Props) => {
 
           <Toaster />
 
+          <SmoothScroll />
           <ReactQueryDevtools client={queryClient} />
         </QueryClientProvider>
       </AuthProvider>

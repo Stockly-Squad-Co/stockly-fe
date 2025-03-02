@@ -1,9 +1,16 @@
+import Navbar from "@/components/Layout/Navbar";
+
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 };
 
 export default Layout;

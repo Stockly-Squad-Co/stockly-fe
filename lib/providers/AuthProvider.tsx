@@ -1,12 +1,13 @@
 "use client";
 
-import SpinLoader from "@/components/Common/Loaders/spin";
+import LogoLoader from "@/components/Common/Loaders/logo.loader";
 import { useSession } from "next-auth/react";
 import React, { FC, ReactNode } from "react";
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { status } = useSession();
-  if (status === "loading") return <SpinLoader />;
+
+  if (status === "loading") return <LogoLoader />;
 
   return <div>{children}</div>;
 };

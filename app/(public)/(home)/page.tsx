@@ -1,5 +1,11 @@
+import Header from "@/components/UI/Home/hero";
+
 const Page = () => {
-  return <p>home</p>;
+  return (
+    <main>
+      <Header />
+    </main>
+  );
 };
 
 export default Page;
