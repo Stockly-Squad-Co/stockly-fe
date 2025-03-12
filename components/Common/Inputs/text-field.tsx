@@ -1,12 +1,12 @@
-"use client";
+'use client';
 import React, {
   HTMLAttributes,
   InputHTMLAttributes,
   LabelHTMLAttributes,
   ReactElement,
   useState,
-} from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+} from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   label?: string;
@@ -36,9 +36,14 @@ export default function TextField({
         <label
           {...LabelProps}
           htmlFor={InputProps?.id}
-          className={`sm:text-[.85rem] text-[0.7rem] ${LabelProps?.className}`}
+          className={`sm:text-[.85rem] text-[0.7rem] ${LabelProps?.className} flex items-center`}
         >
-          {label}
+          {label}{' '}
+          {InputProps?.required && (
+            <span className="text-red-600 mb-[.1rem] ml-1 text-[1.2rem]">
+              *
+            </span>
+          )}
         </label>
       )}
 
@@ -47,13 +52,13 @@ export default function TextField({
           <textarea
             {...InputProps}
             disabled={disabled}
-            className={`w-full h-[150px] md:h-[200px] p-[9px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 resize-none ${InputProps?.className}`}
+            className={`w-full h-[150px] md:h-[200px] p-[12px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 resize-none ${InputProps?.className}`}
           />
         ) : (
           <input
             {...InputProps}
             disabled={disabled}
-            className={`w-full p-[9px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 ${InputProps?.className}`}
+            className={`w-full p-[12px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 ${InputProps?.className}`}
           />
         )}
 
@@ -68,8 +73,8 @@ export default function TextField({
           helperTextProps?.className
         } ${
           helperText
-            ? "translate-y-0 opacity-1"
-            : "-translate-y-[100%] opacity-0"
+            ? 'translate-y-0 opacity-1'
+            : '-translate-y-[100%] opacity-0'
         } transition-all duration-300`}
       >
         {helperText && helperText}
@@ -78,7 +83,7 @@ export default function TextField({
   );
 }
 
-export function PasswordTextField(props: Omit<Props, "inputSuffix">) {
+export function PasswordTextField(props: Omit<Props, 'inputSuffix'>) {
   const [show, setShow] = useState<boolean>(false);
 
   const toggle = () => setShow((prev) => !prev);
@@ -93,7 +98,7 @@ export function PasswordTextField(props: Omit<Props, "inputSuffix">) {
       }
       InputProps={{
         ...props.InputProps,
-        type: show ? "text" : "password",
+        type: show ? 'text' : 'password',
       }}
     />
   );
