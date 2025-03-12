@@ -19,7 +19,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <main className="min-h-screen w-screen relative......................">
+    <main className="min-h-screen w-screen relative">
       <DashboardNavbar />
       <div className="flex w-full">
         <DashboardSidebar />
