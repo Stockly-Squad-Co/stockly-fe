@@ -7,10 +7,13 @@ import { navLinks } from "@/lib/data";
 import { fadeToBottomVariant } from "@/lib/data/variants";
 import { useRouter } from "next/navigation";
 import { FiChevronDown } from "react-icons/fi";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const router = useRouter();
+
+  const { data: session, status } = useSession();
 
   return (
     <nav className="fixed top-0 left-0 z-[100] w-full bg-white">
@@ -78,18 +81,29 @@ const Navbar = () => {
         </ul>
 
         <div className="flex items-center gap-2">
-          <button
-            className="text-primary rounded-lg border-2 border-primary px-8 py-[10px] duration-300 hover:bg-primary hover:text-white"
-            onClick={() => router.push("/account/login")}
-          >
-            Login
-          </button>
-          <button
-            className="text-white rounded-lg border-2 border-primary bg-primary px-8 py-[10px] duration-300"
-            onClick={() => router.push("/account/register")}
-          >
-            Sign Up
-          </button>
+          {session ? (
+            <button
+              className="text-black rounded-lg border-2 border-primary bg-accent px-6 text-sm py-[10px] duration-300"
+              onClick={() => router.push("/dashboard")}
+            >
+              Dashboard
+            </button>
+          ) : (
+            <>
+              <button
+                className="text-primary rounded-lg border-2 border-primary px-8 py-[10px] duration-300 hover:bg-primary hover:text-white"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </button>
+              <button
+                className="text-black rounded-lg border-2 border-primary bg-accent px-8 py-[10px] duration-300"
+                onClick={() => router.push("/register")}
+              >
+                Sign Up
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

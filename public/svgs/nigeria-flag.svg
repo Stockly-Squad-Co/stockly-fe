@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20" id="nigeria-flag">
+  <path d="M0 0h30v20H0z"></path>
+  <path fill="#008751" d="M1 1h9v18H1zM20 1h9v18h-9z"></path>
+  <path fill="#fff" d="M10 1h10v18H10z"></path>
+</svg>

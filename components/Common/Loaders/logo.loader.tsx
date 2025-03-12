@@ -9,18 +9,28 @@ interface Props {
 const LogoLoader = ({ type = "full" }: Props) => {
   return type === "full" ? (
     <div className="fixed flex items-center justify-center w-full h-full z-[1000]">
-      <Logo />
+      <div className="animate-pulse">
+        <Logo />
+      </div>
     </div>
   ) : (
-    <div>
+    <div className="animate-pulse">
       <Logo />
     </div>
   );
 };
 
-export const Logo = () => {
+export const Logo = ({ color }: { color?: "white" | "black" }) => {
   return (
-    <div className="text-primary flex items-center gap-1 text-2xl animate-pulse">
+    <div
+      className={`${
+        color === "white"
+          ? "text-white"
+          : color === "black"
+          ? "text-black"
+          : "text-primary"
+      } flex items-center gap-1 text-2xl`}
+    >
       <SiNanostores />
       <span className="font-bold">Stockly</span>
     </div>

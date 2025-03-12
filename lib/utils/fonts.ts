@@ -10,6 +10,11 @@ export const openSans = localFont({
   display: "swap",
 });
 
+export const monaSans = localFont({
+  src: "../../assets/fonts/MonaSans-VariableFont_wdth,wght.ttf",
+  display: "swap",
+});
+
 export const afacad = localFont({
   src: "../../assets/fonts/AfacadFlux-VariableFont_slnt,wght.ttf",
   display: "swap",

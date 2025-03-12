@@ -1,9 +1,14 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+// import { Suspense } from "react";
+
+// const TargetModel = dynamic(() => import("./target-model"), { ssr: false });
 
 const Hero = () => {
   return (
-    <section className="2xl:py-28 py-20 grid grid-cols-2 gap-4 items-center container">
+    <section className="2xl:py-28 py-28 grid grid-cols-2 gap-4 items-center container">
       <div className="max-w-3xl xl:max-w-4xl">
         <div className="space-y-5">
           <h1 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-extrabold text-primary leading-relaxed">
@@ -17,23 +22,29 @@ const Hero = () => {
         </div>
 
         <div className="mt-6 flex justify-center md:justify-start space-x-4">
-          <Link href="/account/register">
-            <button className="bg-primary text-white px-16 py-3 rounded-lg hover:bg-blue-800 transition">
+          <Link href="/register">
+            <button className="bg-accent text-black px-16 py-3 rounded-lg hover:bg-primary hover:text-white transition">
               Get Started
             </button>
           </Link>
         </div>
       </div>
 
-      <div className="md:size-[600px] flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <Image
           src={"/svgs/product_look.svg"}
           alt="hero"
           width={300}
           height={300}
-          className="md:size-[500px] 2xl:size-[600px]"
+          className="md:size-[500px] 2xl:size-[600px] ml-auto"
         />
       </div>
+
+      {/* <Suspense>
+        <div className="size-[500px] border border-red-500">
+          <TargetModel />
+        </div>
+      </Suspense> */}
     </section>
   );
 };

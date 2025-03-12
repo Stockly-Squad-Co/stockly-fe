@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../public/globals.css";
-import { openSans } from "@/lib/utils/fonts";
+import { monaSans } from "@/lib/utils/fonts";
 import Providers from "@/lib/providers";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${openSans.className} antialiased`}>
+      <body className={`${monaSans.className} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

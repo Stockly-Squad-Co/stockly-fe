@@ -46,3 +46,17 @@ html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+.custom-shadow {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+input,
+textarea,
+select {
+  outline: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

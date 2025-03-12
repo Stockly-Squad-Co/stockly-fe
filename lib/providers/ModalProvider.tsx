@@ -13,7 +13,7 @@ interface ModalProviderProps {
   children: ReactNode;
 }
 
-const ModalProvider = ({ children }: ModalProviderProps): JSX.Element => {
+const ModalProvider = ({ children }: ModalProviderProps): React.ReactNode => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
 
   const showModal = (content: ReactNode) => setModalContent(content);

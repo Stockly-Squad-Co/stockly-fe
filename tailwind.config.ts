@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  darkmode: "class",
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,12 +10,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#1E3A8A", // Deep Blue
-        secondary: "#60A5FA", // Light Blue
-        accent: "#10B981", // Green
-        background: "#FFFFFF", // White
-        text: "#111827", // Dark Gray
-        border: "#D1D5DB", // Light Gray
+        primary: "#0F172A", // Deep Navy Blue
+        secondary: "#1E40AF", // Royal Blue
+        accent: "#FACC15", // Gold
+        background: "#F8FAFC", // Soft White
+        text: "#1E293B", // Dark Gray
+        border: "#CBD5E1", // Light Gray
       },
       container: {
         center: true,
