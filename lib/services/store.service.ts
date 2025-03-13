@@ -1,4 +1,4 @@
-import { ApiResponse, Collection, Product, Store } from "../@types";
+import { ApiResponse, Collection, Order, Product, Store } from "../@types";
 import { StoreSetup, StoreSetupResponse } from "../@types/auth";
 import { publicApi } from "../configs/axios-instance";
 
@@ -72,6 +72,35 @@ export const fetchProducts = async ({
       data: { data },
     } = await publicApi.get<ApiResponse<Product[]>>(
       `/product/store/${slug}/products?${searchParams.toString()}`
+    );
+    return data;
+  } catch (err: any) {
+    throw new Error(err?.response.data.msg || "Something went wrong");
+  }
+};
+
+export const getProductById = async (id: string) => {
+  try {
+    const {
+      data: { data },
+    } = await publicApi.get<ApiResponse<Product>>(`/product/${id}`);
+    return data;
+  } catch (err: any) {
+    throw new Error(err?.response.data.msg || "Something went wrong");
+  }
+};
+
+export const checkout = async ({
+  body,
+  slug,
+}: {
+  body: Order;
+  slug: string;
+}) => {
+  try {
+    const { data } = await publicApi.post<ApiResponse<null>>(
+      `/order/checkout/${slug}`,
+      body
     );
     return data;
   } catch (err: any) {

@@ -67,10 +67,29 @@ export interface Product {
   name: string;
   images: string[];
   display_image: string;
+  description?: string;
   price: number;
   unit: string;
   unit_value: number;
   createdAt: string;
   is_discounted: boolean;
   discountedPrice?: number;
+}
+
+export interface Order {
+  cart: { product: string; quantity: number }[];
+  customer: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+  };
+  orderDate: string;
+  type: "PICKUP" | "DELIVERY";
+  address: {
+    state: string;
+    city: string;
+    zip_code: string;
+    street_address: string;
+  };
 }

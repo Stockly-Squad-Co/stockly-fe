@@ -19,6 +19,8 @@ import { RiUser3Line } from "react-icons/ri";
 import Image from "next/image";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoLogOutOutline } from "react-icons/io5";
+import { useSidebar } from "../../../lib/providers/SideDrawerProvider";
+import Cart from "../../UI/Cart";
 
 interface Props {
   showBanner?: boolean;
@@ -34,6 +36,8 @@ const Navbar = ({ showBanner }: Props) => {
   const { isOpen, dropdownRef, toggleDropdown } = useDropDown();
 
   const { showModal } = useModal();
+
+  const { showSidebar } = useSidebar();
 
   const { items } = useCartStore();
 
@@ -114,7 +118,7 @@ const Navbar = ({ showBanner }: Props) => {
 
           <div
             className="relative size-10 rounded-full flex hover:bg-gray-100 duration-300 items-center justify-center border border-gray-200 cursor-pointer select-none"
-            onClick={() => router.push("/cart")}
+            onClick={() => showSidebar(<Cart />)}
           >
             <FaOpencart size={18} />
 

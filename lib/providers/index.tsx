@@ -10,6 +10,7 @@ import { Suspense } from "react";
 import AuthProvider from "./AuthProvider";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import SidebarProvider from "./SideDrawerProvider";
 
 gsap.registerPlugin(useGSAP);
 
@@ -28,7 +29,9 @@ const Providers = ({ children }: Props) => {
             <NextTopLoader showSpinner={false} color="#FACC15" />
           </Suspense>
 
-          <ModalProvider>{children}</ModalProvider>
+          <ModalProvider>
+            <SidebarProvider>{children}</SidebarProvider>
+          </ModalProvider>
 
           <Toaster />
 

@@ -10,6 +10,10 @@ import Image from "next/image";
 import StoreSkeleton from "./skeleton";
 import { formatNaira } from "@/lib/utils/helpers";
 import useCartStore from "@/lib/store/cart.store";
+import { BsCartDash, BsCartPlus } from "react-icons/bs";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/lib/providers/ModalProvider";
+import ProductDetailsModal from "../Product/product-details-modal";
 
 interface Props {
   slug: string;
@@ -35,7 +39,10 @@ const Store = ({ slug }: Props) => {
     queryKey: ["products", slug],
   });
 
-  const { addToCart, checkExists, removeFromCart } = useCartStore();
+  const { checkExists, toggleProduct } = useCartStore();
+  const { showModal } = useModal();
+
+  const router = useRouter();
 
   if (loading) return <StoreSkeleton />;
 
@@ -52,7 +59,7 @@ const Store = ({ slug }: Props) => {
   return (
     <main>
       <section className="h-[20rem] bg-accent/10 rounded-lg mt-20 flex items-center w-full container">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 px-8">
           <div className="size-44 rounded-full relative overflow-auto bg-accent/10">
             <Image
               src={store?.logo}
@@ -155,13 +162,18 @@ const Store = ({ slug }: Props) => {
                     key={product._id}
                     className="rounded-md border p-3 border-gray-50"
                   >
-                    <div className="relative overflow-hidden group duration-300 min-h-[15rem] rounded-md">
+                    <div
+                      className="relative overflow-hidden group duration-300 min-h-[15rem] rounded-md group"
+                      onClick={() =>
+                        showModal(<ProductDetailsModal {...product} />)
+                      }
+                    >
                       <Image
                         src={product.display_image}
                         alt="product"
                         width={500}
                         height={500}
-                        className="absolute top-0 left-0 w-full h-full object-cover"
+                        className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 duration-300"
                       />
                     </div>
 
@@ -193,18 +205,36 @@ const Store = ({ slug }: Props) => {
                       </div>
                     </div>
 
-                    <button
-                      className="py-1.5 px-3 text-sm font-medium border border-primary duration-300 hover:bg-primary hover:text-white text-black rounded-full"
-                      onClick={() =>
-                        checkExists(product._id)
-                          ? removeFromCart(product._id)
-                          : addToCart(product)
-                      }
-                    >
-                      {checkExists(product._id)
-                        ? "Remove from cart"
-                        : "Add to cart"}
-                    </button>
+                    <div className="flex items-center justify-between gap-2">
+                      <button
+                        className="py-1.5 px-4 text-sm font-medium border border-primary duration-300 hover:bg-primary hover:text-white text-black rounded-full"
+                        onClick={() =>
+                          showModal(<ProductDetailsModal {...product} />)
+                        }
+                      >
+                        View
+                      </button>
+
+                      <button
+                        className={`size-8 flex items-center justify-center rounded-full border ${
+                          checkExists(product._id) ? "bg-accent text-black" : ""
+                        } duration-300 hover:bg-gray-50 border-gray-50`}
+                      >
+                        {checkExists(product._id) ? (
+                          <BsCartDash
+                            onClick={() =>
+                              toggleProduct({ ...product, quantity: 1 })
+                            }
+                          />
+                        ) : (
+                          <BsCartPlus
+                            onClick={() =>
+                              toggleProduct({ ...product, quantity: 1 })
+                            }
+                          />
+                        )}
+                      </button>
+                    </div>
 
                     {/* <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/10 to-black/90"></div> */}
                   </div>
