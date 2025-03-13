@@ -2,7 +2,7 @@ import { FiBarChart, FiCreditCard, FiShoppingCart } from "react-icons/fi";
 import { BusinessSector } from "../utils/enums";
 
 export const navLinks = [
-  { title: "Home", href: "/" },
+  { title: "Store", href: "/store" },
   {
     title: "Features",
     sublinks: [
@@ -27,7 +27,7 @@ export const navLinks = [
     title: "Resources",
     sublinks: ["Blog", "Help Center", "API Documentation"],
   },
-  { title: "Company", sublinks: ["About Us", "Careers", "Contact"] },
+  // { title: "Company", sublinks: ["About Us", "Careers", "Contact"] },
 ];
 
 type FAQItem = {

@@ -17,3 +17,17 @@ export const getBase64 = (file: File): Promise<string> => {
     };
   });
 };
+
+export const formatNaira = (price: number) => {
+  return new Intl.NumberFormat("en-NG", {
+    currency: "NGN",
+    style: "currency",
+  }).format(price);
+};
+
+export const formatDollar = (price: number) => {
+  return new Intl.NumberFormat("en-US", {
+    currency: "USD",
+    style: "currency",
+  }).format(price);
+};
