@@ -2,20 +2,15 @@
 import { useRouter } from 'next/navigation';
 import React, { FC, ReactNode } from 'react';
 import { BiArrowBack } from 'react-icons/bi';
+import BackButton from '../Button/back-button';
 
 interface Props {
-  onBack?(): void;
   title: string;
   maxWidth?: number;
   children: ReactNode;
 }
 
-const FormContainer: FC<Props> = ({
-  onBack,
-  title,
-  maxWidth = 800,
-  children,
-}) => {
+const FormContainer: FC<Props> = ({ title, maxWidth = 800, children }) => {
   const router = useRouter();
 
   return (
@@ -24,16 +19,7 @@ const FormContainer: FC<Props> = ({
       style={{ maxWidth: maxWidth, width: '100vw' }}
     >
       <header className="flex items-center gap-4">
-        <span className="w-[40px] h-[40px] bg-gray-100 rounded-md grid place-content-center">
-          <BiArrowBack
-            size={25}
-            cursor={'pointer'}
-            onClick={() => {
-              router.back();
-              onBack?.();
-            }}
-          />
-        </span>
+        <BackButton />
 
         <h2 className="text-[1.5rem] max-md:text-[1.1rem] font-bold">
           {title}

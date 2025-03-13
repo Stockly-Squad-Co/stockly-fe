@@ -16,3 +16,10 @@ export const copyToClipboard = async (
 export const formatDate = (date: Date) => {
   return format(date, 'MMM dd, yyyy');
 };
+
+export const formatNaira = (price: number) => {
+  return new Intl.NumberFormat('en-NG', {
+    currency: 'NGN',
+    style: 'currency',
+  }).format(price);
+};

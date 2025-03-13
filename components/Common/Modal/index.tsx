@@ -1,6 +1,6 @@
-import { opacityVariant } from "@/lib/data/variants";
-import { motion } from "framer-motion";
-import { FC, useEffect, useRef } from "react";
+import { useModal } from '@/lib/providers/ModalProvider';
+import { motion, Variants } from 'framer-motion';
+import { FC, useEffect, useRef } from 'react';
 
 const variant = {
   initial: { opacity: 0, scale: 0 },
@@ -8,13 +8,19 @@ const variant = {
     opacity: 1,
     scale: 1,
     transition: {
-      ease: "easeInOut",
-      type: "spring",
+      ease: 'easeInOut',
+      type: 'spring',
       damping: 15,
       duration: 0.5,
     },
   },
   exit: { opacity: 0, scale: 0 },
+};
+
+export const opacityVariant: Variants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.08 } },
+  exit: { opacity: 0 },
 };
 
 type ModalProps = {
@@ -38,18 +44,19 @@ const Modal: FC<ModalProps> = ({
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        onClose();
+        // @ts-ignore
+        onClose;
       }
     };
 
     if (isOpen) {
-      window.addEventListener("click", handleOutsideClick);
-      document.body.style.overflowY = "hidden";
+      window.addEventListener('click', handleOutsideClick);
+      document.body.style.overflowY = 'hidden';
     }
 
     return () => {
-      window.removeEventListener("click", handleOutsideClick);
-      document.body.style.overflowY = "auto";
+      window.removeEventListener('click', handleOutsideClick);
+      document.body.style.overflowY = 'auto';
     };
   }, []);
 

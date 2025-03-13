@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import NextTopLoader from "nextjs-toploader";
-import { SessionProvider } from "next-auth/react";
-import ModalProvider from "./ModalProvider";
-import { Toaster } from "sonner";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Suspense } from "react";
-import AuthProvider from "./AuthProvider";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import NextTopLoader from 'nextjs-toploader';
+import { SessionProvider } from 'next-auth/react';
+import ModalProvider from './ModalProvider';
+import { Toaster } from 'sonner';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Suspense } from 'react';
+import AuthProvider from './AuthProvider';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(useGSAP);
 
@@ -17,7 +17,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const Providers = ({ children }: Props) => {
   return (

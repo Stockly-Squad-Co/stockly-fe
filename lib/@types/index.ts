@@ -1,4 +1,11 @@
-import { OrderPaymentStatus, OrderStatus } from '../enums';
+import {
+  CollectionStatus,
+  OrderPaymentStatus,
+  OrderStatus,
+  ProductHistorySource,
+  ProductStatus,
+  ProductUnits,
+} from '../enums';
 
 export interface ApiResponse<T = any, M = any> {
   status: boolean;
@@ -80,6 +87,7 @@ export type Customer = {
   purchase_history: PurchaseHistory[];
   totalAmountSpent: number;
   totalOrders: number;
+  totalOrdersValue: number;
   lastOrderDate: Date;
 };
 
@@ -89,5 +97,57 @@ export type PurchaseHistory = {
   paymentStatus: OrderPaymentStatus;
   totalAmount: number;
   sku: string;
+  createdAt: Date;
+  customer_name: string;
+};
+
+export type Product = {
+  _id: string;
+  createdAt: Date;
+  name: string;
+  slug: string;
+  description: string;
+  images: string[];
+  display_image: string;
+  price: number;
+  costPrice: number;
+  quantityAvailable: number;
+  lowStockLevelAlert: number;
+  status: ProductStatus;
+  unit: ProductUnits;
+  unit_value: number;
+  pid: number;
+  collection_count: number;
+  is_discounted: boolean;
+  discountedPrice: number;
+  collections: Collections[];
+  totalRemoved: number;
+  totalSold: number;
+  totalAdded: number;
+  totalReturned: number;
+  history: ProductHistory[];
+};
+
+export type ProductHistory = {
+  _id: string;
+  source: ProductHistorySource;
+  quantity_effected: number;
+  quantity_before: number;
+  quantity_after: number;
+  activity: string;
+  createdAt: Date;
+};
+
+export type Collections = {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  totalProducts: number;
+  allProducts: Product[];
+  unpublishedProducts: Product[];
+  publishedProducts: Product[];
+  slug: string;
+  status: CollectionStatus;
   createdAt: Date;
 };
