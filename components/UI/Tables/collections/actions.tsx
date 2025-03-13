@@ -1,10 +1,10 @@
 'use client';
 import SpinLoader from '@/components/Common/Loaders/spin';
 import ConfirmationModal from '@/components/Common/Modal/confirmation-modal';
-import { Customer } from '@/lib/@types';
+import { Collections } from '@/lib/@types';
 import { queryClient } from '@/lib/providers';
 import { useModal } from '@/lib/providers/ModalProvider';
-import { deleteCustomer } from '@/lib/services/customer.service';
+import { deleteCollection } from '@/lib/services/products.service';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { FC } from 'react';
@@ -13,21 +13,22 @@ import { FiEye } from 'react-icons/fi';
 import { toast } from 'sonner';
 
 interface Props {
-  customer: Customer;
+  collection: Collections;
 }
 
-const Actions: FC<Props> = ({ customer }) => {
+const Actions: FC<Props> = ({ collection }) => {
   const router = useRouter();
   const { showModal } = useModal();
 
-  const { mutateAsync: _deleteCustomer, isPending: _deletingCustomer } =
+  const { mutateAsync: _deleteCollection, isPending: _deletingCollection } =
     useMutation({
-      mutationKey: ['customers', 'delete'],
-      mutationFn: () => deleteCustomer(customer._id),
+      mutationKey: ['collections', 'delete'],
+      mutationFn: () => deleteCollection(collection._id),
       onSuccess() {
-        toast.success('Customer deleted successfully');
+        toast.success('Collection deleted successfully');
         queryClient.invalidateQueries({
-          predicate: ({ queryKey }) => queryKey.includes('customers'),
+          predicate: ({ queryKey }) =>
+            queryKey.includes('products') || queryKey.includes('collections'),
         });
       },
     });
@@ -37,10 +38,10 @@ const Actions: FC<Props> = ({ customer }) => {
       <FiEye
         size={22}
         cursor={'pointer'}
-        onClick={() => router.push(`/customers/${customer?._id}`)}
+        onClick={() => router.push(`/products/collections/${collection?._id}`)}
       />
 
-      {_deletingCustomer ? (
+      {_deletingCollection ? (
         <SpinLoader size={20} type="small" />
       ) : (
         <BiTrash
@@ -49,9 +50,9 @@ const Actions: FC<Props> = ({ customer }) => {
           onClick={() =>
             showModal(
               <ConfirmationModal
-                title="Delete Customer"
-                subtitle="Are you sure you want to delete this customer?"
-                onYes={_deleteCustomer}
+                title="Delete Collection"
+                subtitle="Are you sure you want to delete this collection?"
+                onYes={_deleteCollection}
               />
             )
           }

@@ -1,8 +1,6 @@
 'use client';
 import BackButton from '@/components/Common/Button/back-button';
-import { useRouter } from 'next/navigation';
 import React from 'react';
-import { BiArrowBack } from 'react-icons/bi';
 
 const Skeleton = () => {
   return (

@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 
 interface Props {
   boxKey: string;
-  value?: string;
+  value?: string | number;
   icon: ReactNode;
   iconColor: string;
   boxBg: string;
@@ -17,7 +17,7 @@ const SmallContentBox: FC<Props> = ({
 }) => {
   return (
     <article
-      className="p-3 rounded-md flex items-center justify-between gap-4 min-w-[200px] cursor-pointer border-l-4"
+      className="p-3 rounded-md flex items-center justify-between gap-4 min-w-[220px] cursor-pointer border-l-4"
       style={{ background: boxBg, borderLeftColor: iconColor }}
     >
       <div>
@@ -27,7 +27,7 @@ const SmallContentBox: FC<Props> = ({
 
       <span
         style={{ color: iconColor }}
-        className="text-[1.2rem] bg-white p-2 rounded-md"
+        className="text-[1.2rem] bg-white p-2 rounded-md w-[40px] h-[40px] grid place-content-center font-bold"
       >
         {icon}
       </span>

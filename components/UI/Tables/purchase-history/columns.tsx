@@ -1,4 +1,4 @@
-import OrderStatus from '@/components/Common/Statuses/order-status';
+import OrderStatus from '@/components/Common/Status/order-status';
 import { PurchaseHistory } from '@/lib/@types';
 import { formatNaira } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';

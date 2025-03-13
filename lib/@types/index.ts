@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   CollectionStatus,
   OrderPaymentStatus,
@@ -12,6 +13,11 @@ export interface ApiResponse<T = any, M = any> {
   msg: string;
   data: T;
   meta?: M;
+}
+
+export interface TabsDto {
+  header: string;
+  widget: ReactNode;
 }
 
 export type DateRange =
@@ -150,4 +156,10 @@ export type Collections = {
   slug: string;
   status: CollectionStatus;
   createdAt: Date;
+};
+
+export type InventoryOverview = {
+  totalInventoryValue: number;
+  totalSold: number;
+  outOfStock: number;
 };
