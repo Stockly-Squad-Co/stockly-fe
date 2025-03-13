@@ -1,6 +1,8 @@
-import axios from "axios";
-import { API_URL } from "../utils/env";
-import { getSession } from "next-auth/react";
+import axios from 'axios';
+import { API_URL } from '../utils/env';
+import { getSession } from 'next-auth/react';
+
+const is_dev = process.env.NODE_ENV === 'development';
 
 export const publicApi = axios.create({
   withCredentials: false,
@@ -14,9 +16,13 @@ export const authApi = axios.create({
 
 authApi.interceptors.request.use(async (config) => {
   const session = await getSession();
-  const token = session?.accessToken || "";
+  const token = session?.accessToken || '';
 
-  if (token) config.headers["Authorization"] = `Bearer ${token}`;
+  if (is_dev) {
+    console.log('accessing endpoint with', token);
+  }
+
+  if (token) config.headers['Authorization'] = `Bearer ${token}`;
 
   return config;
 });

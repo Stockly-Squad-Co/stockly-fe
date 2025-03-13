@@ -1,10 +1,10 @@
-"use client";
+'use client';
 import type {
   ColumnDef,
   ColumnFiltersState,
   FilterFn,
   SortingFn,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import {
   flexRender,
   getCoreRowModel,
@@ -12,10 +12,10 @@ import {
   getPaginationRowModel,
   sortingFns,
   useReactTable,
-} from "@tanstack/react-table";
-import React from "react";
+} from '@tanstack/react-table';
+import React from 'react';
 
-import Button from "@/components/Common/Button";
+import Button from '@/components/Common/Button';
 import {
   Table,
   TableBody,
@@ -23,20 +23,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/Common/Shadcn/table";
-import Link from "next/link";
+} from '@/components/Common/Shadcn/table';
+import Link from 'next/link';
 
 import {
   RankingInfo,
   rankItem,
   compareItems,
-} from "@tanstack/match-sorter-utils";
-import ThreeDotsLoader from "../Loaders/dots.loader";
-import TableRange, { RangeProps } from "./date-filter";
-import TextField from "../Inputs/text-field";
-import { FaArrowRight } from "react-icons/fa";
+} from '@tanstack/match-sorter-utils';
+import ThreeDotsLoader from '../Loaders/dots.loader';
+import TableRange, { RangeProps } from './date-filter';
+import TextField from '../Inputs/text-field';
+import { FaArrowRight } from 'react-icons/fa';
 
-declare module "@tanstack/react-table" {
+declare module '@tanstack/react-table' {
   interface FilterFns {
     fuzzy: FilterFn<unknown>;
   }
@@ -108,7 +108,7 @@ export default function TableComponent<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [globalFilter, setGlobalFilter] = React.useState('');
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -124,10 +124,10 @@ export default function TableComponent<TData, TValue>({
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: "fuzzy",
+    globalFilterFn: 'fuzzy',
     enableRowSelection: true,
     enableColumnResizing: true,
-    columnResizeMode: "onChange",
+    columnResizeMode: 'onChange',
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -169,7 +169,7 @@ export default function TableComponent<TData, TValue>({
               {showSearch && (
                 <div>
                   <DebouncedInput
-                    value={globalFilter ?? ""}
+                    value={globalFilter ?? ''}
                     onChange={(value) => setGlobalFilter(String(value))}
                     className="p-2 font-lg shadow border border-block"
                     placeholder="Search all columns..."
@@ -194,9 +194,9 @@ export default function TableComponent<TData, TValue>({
                     colSpan={header.colSpan}
                     style={{
                       width: `${header.getSize()}px`,
-                      textAlign: "left",
-                      color: "#08382C",
-                      fontWeight: "bold",
+                      textAlign: 'left',
+                      color: '#08382C',
+                      fontWeight: 'bold',
                     }}
                     className=""
                   >
@@ -211,9 +211,9 @@ export default function TableComponent<TData, TValue>({
           </TableHeader>
           {/* add space here */}
           {loading ? (
-            <div className="w-full h-full grid place-content-center">
+            <strong className="w-full h-full grid place-content-center">
               <ThreeDotsLoader />
-            </div>
+            </strong>
           ) : (
             <TableBody>
               {table.getRowModel().rows.length === 0 ? (
@@ -227,11 +227,11 @@ export default function TableComponent<TData, TValue>({
                   <TableRow
                     key={row.id}
                     className="hover:bg-gray-200/40 duration-300 group border-gray-200"
-                    data-state={row.getIsSelected() && "selected"}
+                    data-state={row.getIsSelected() && 'selected'}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
-                        style={{ textAlign: "left", color: "#4F4F4F" }}
+                        style={{ textAlign: 'left', color: '#4F4F4F' }}
                         key={cell.id}
                       >
                         {flexRender(
@@ -253,7 +253,7 @@ export default function TableComponent<TData, TValue>({
             <span className="flex items-center gap-1">
               <div>Page</div>
               <strong>
-                {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getState().pagination.pageIndex + 1} of{' '}
                 {table.getPageCount()}
               </strong>
             </span>
@@ -281,28 +281,28 @@ export default function TableComponent<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              {"<<"}
+              {'<<'}
             </Button>
             <Button
               variant="outline"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              {"<"}
+              {'<'}
             </Button>
             <Button
               variant="outline"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              {">"}
+              {'>'}
             </Button>
             <Button
               variant="outline"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              {">>"}
+              {'>>'}
             </Button>
           </div>
         </div>
@@ -320,7 +320,7 @@ export const DebouncedInput = ({
   value: string | number;
   onChange: (value: string | number) => void;
   debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) => {
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) => {
   const [value, setValue] = React.useState(initialValue);
 
   React.useEffect(() => {
@@ -344,7 +344,7 @@ export const DebouncedInput = ({
           setValue(e.target.value);
         },
         className:
-          "p-2 font-lg border border-block shadow-none rounded-md placeholder:text-sm",
+          'p-2 font-lg border border-block shadow-none rounded-md placeholder:text-sm',
       }}
     />
   );
