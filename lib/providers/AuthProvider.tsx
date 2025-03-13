@@ -12,8 +12,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     getUserInfo().then((user) => {
-      setUser(user);
-      console.log(user);
+      if (user) setUser(user);
     });
   }, []);
 
