@@ -1,98 +1,54 @@
-interface SidebarGroup {
-  name: string;
-  items: SidebarItem[];
-}
+import { ReactNode } from 'react';
+import {
+  LuLayoutDashboard,
+  LuShoppingBag,
+  LuTag,
+  LuUsers,
+} from 'react-icons/lu';
+import { CiDiscount1 } from 'react-icons/ci';
+import { PiMoneyWavy } from 'react-icons/pi';
+import { MdOutlineAccountBalance } from 'react-icons/md';
 
 interface SidebarItem {
   name: string;
-  icon: string;
+  icon: ReactNode;
   href: string;
 }
 
-export const sidebar: SidebarGroup[] = [
+export const sidebarLinks: SidebarItem[] = [
   {
-    name: "Dashboard",
-    items: [
-      {
-        name: "Home",
-        icon: "home",
-        href: "/dashboard",
-      },
-      {
-        name: "Analytics",
-        icon: "chart-bar",
-        href: "/dashboard/analytics",
-      },
-      {
-        name: "Settings",
-        icon: "cog",
-        href: "/dashboard/settings",
-      },
-    ],
+    name: 'Dashboard',
+    icon: <LuLayoutDashboard />,
+    href: '/dashboard',
   },
   {
-    name: "Products",
-    items: [
-      {
-        name: "All Products",
-        icon: "cube",
-        href: "/dashboard/products",
-      },
-      {
-        name: "Add Product",
-        icon: "plus",
-        href: "/dashboard/products/add",
-      },
-    ],
+    name: 'Products',
+    icon: <LuTag />,
+    href: '/products',
   },
   {
-    name: "Orders",
-    items: [
-      {
-        name: "All Orders",
-        icon: "shopping-cart",
-        href: "/dashboard/orders",
-      },
-      {
-        name: "Add Order",
-        icon: "plus",
-        href: "/dashboard/orders/add",
-      },
-    ],
+    name: 'Orders',
+    icon: <LuShoppingBag />,
+    href: '/orders',
   },
   {
-    name: "Customers",
-    items: [
-      {
-        name: "All Customers",
-        icon: "users",
-        href: "/dashboard/customers",
-      },
-      {
-        name: "Add Customer",
-        icon: "user-plus",
-        href: "/dashboard/customers/add",
-      },
-    ],
+    name: 'Customers',
+    icon: <LuUsers />,
+    href: '/customers',
   },
   {
-    name: "Settings",
-    items: [
-      {
-        name: "General",
-        icon: "cog",
-        href: "/dashboard/settings/general",
-      },
-      {
-        name: "Billing",
-        icon: "credit-card",
-        href: "/dashboard/settings/billing",
-      },
-      {
-        name: "Users",
-        icon: "users",
-        href: "/dashboard/settings/users",
-      },
-    ],
+    name: 'Promotions',
+    icon: <CiDiscount1 />,
+    href: '/promotions',
+  },
+  {
+    name: 'Expenses',
+    icon: <MdOutlineAccountBalance />,
+    href: '/expenses',
+  },
+  {
+    name: 'Transactions',
+    icon: <PiMoneyWavy />,
+    href: '/transactions',
   },
 ];

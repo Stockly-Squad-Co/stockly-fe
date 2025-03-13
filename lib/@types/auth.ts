@@ -17,7 +17,7 @@ export interface LoginResponse {
   refreshToken: string;
   accessTokenExpiresAt: string;
   refreshTokenExpiresAt: string;
-  nextStep?: "store-profile" | "password-setup" | "email-verification";
+  nextStep?: 'store-profile' | 'password-setup' | 'email-verification';
 }
 
 export type RegisterType = {
