@@ -98,10 +98,28 @@ export const checkout = async ({
   slug: string;
 }) => {
   try {
-    const { data } = await publicApi.post<ApiResponse<null>>(
+    const {
+      data: { data },
+    } = await publicApi.post<ApiResponse<{ checkout_url: string }>>(
       `/order/checkout/${slug}`,
       body
     );
+    return data.checkout_url;
+  } catch (err: any) {
+    throw new Error(err?.response.data.msg || "Something went wrong");
+  }
+};
+
+export const verifyReference = async (reference: string) => {
+  try {
+    const {
+      data: { data },
+    } = await publicApi.get<
+      ApiResponse<{
+        status: "SUCCESSFUL" | "PENDING" | "FAILED";
+        amount: number;
+      }>
+    >(`/payment/verify/${reference}`);
     return data;
   } catch (err: any) {
     throw new Error(err?.response.data.msg || "Something went wrong");

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useSidebar } from "../../../lib/providers/SideDrawerProvider";
+import { useSidebar } from "../../../lib/providers/SidedrawerProvider";
 import useCartStore from "../../../lib/store/cart.store";
 import SidebarComp from "../../Common/Sidebar";
 import { formatNaira } from "../../../lib/utils/helpers";
@@ -9,7 +9,6 @@ import { CiTrash } from "react-icons/ci";
 import { AnimatePresence, motion } from "framer-motion";
 import { BiMinus, BiPlus } from "react-icons/bi";
 import { IoBagCheckOutline } from "react-icons/io5";
-
 import { useModal } from "../../../lib/providers/ModalProvider";
 import CheckoutModal from "../Product/checkout-modal";
 

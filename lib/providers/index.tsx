@@ -10,7 +10,7 @@ import { Suspense } from "react";
 import AuthProvider from "./AuthProvider";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import SidebarProvider from "./SideDrawerProvider";
+import SidebarProvider from "./SidedrawerProvider";
 
 gsap.registerPlugin(useGSAP);
 
