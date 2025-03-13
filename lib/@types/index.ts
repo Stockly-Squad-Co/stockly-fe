@@ -51,32 +51,7 @@ export type Address = {
   zip_code: string;
 };
 
-export type Store = {
-  address: Address;
-  bankDetails: {
-    bank_name: string;
-    account_number: string;
-    account_name: string;
-    bank_code: string;
-  };
-  email: string;
-  logo: string;
-  name: string;
-  phoneNumber: string;
-  sector: string;
-  slogan: string;
-  store_business_id: number;
-  slug: string;
-};
 
-export type User = {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-  profilePicture: string;
-  store: Store;
-};
 
 export type Customer = {
   _id: string;
@@ -163,3 +138,72 @@ export type InventoryOverview = {
   totalSold: number;
   outOfStock: number;
 };
+
+
+export interface ApiResponse<T> {
+  status: boolean;
+  msg: string;
+  data: T;
+}
+
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  profilePicture: string;
+  store: Store;
+}
+
+export interface Store {
+  _id: string;
+  address: Address;
+  bankDetails: BankDetails;
+  description: string;
+  email: string;
+  logo: string;
+  name: string;
+  phoneNumber: string;
+  sector: string;
+  slogan: string;
+  slug: string;
+  store_business_id: number;
+}
+
+
+
+export interface BankDetails {
+  bank_name: string;
+  account_number: string;
+  account_name: string;
+  bank_code: string;
+}
+
+export interface Collection {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+}
+
+
+
+export interface Order {
+  cart: { product: string; quantity: number }[];
+  customer: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+  };
+  orderDate: string;
+  type: "PICKUP" | "DELIVERY";
+  address: {
+    state: string;
+    city: string;
+    zip_code: string;
+    street_address: string;
+  };
+}
