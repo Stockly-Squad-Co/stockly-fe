@@ -1,5 +1,5 @@
-import { authApi } from '../configs/axios-instance';
-import { ApiResponse, User } from '../@types';
+import { authApi } from "../configs/axios-instance";
+import { ApiResponse, User } from "../@types";
 
 export const getUserInfo = async () => {
   try {
@@ -8,6 +8,7 @@ export const getUserInfo = async () => {
     } = await authApi.get<ApiResponse<User>>(`/user`);
     return data;
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    console.log(err);
+    // throw new Error(err?.response.data.msg || 'Something went wrong');
   }
 };
