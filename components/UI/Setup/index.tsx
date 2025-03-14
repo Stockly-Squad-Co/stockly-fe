@@ -616,8 +616,7 @@ const Setup = () => {
                   !storePhoneNumber ||
                   !storeSector ||
                   !EMAIL_REGEX.test(storeEmail))) ||
-              (step === 2 &&
-                (!storeAddress || !storeBankDetails || !isValid)) ||
+              (step === 2 && (!storeAddress || !storeBankDetails)) ||
               settingUpStore
             }
           >
