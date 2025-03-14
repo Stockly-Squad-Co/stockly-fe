@@ -1,15 +1,21 @@
-import { cn } from '@/lib/utils/cn';
-import { ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode } from 'react';
-import { RiLoader5Line } from 'react-icons/ri';
+import { cn } from "@/lib/utils/cn";
+import { ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode } from "react";
+import { RiLoader5Line } from "react-icons/ri";
 
 type Props = {
   children: ReactNode;
-  size?: 'small' | 'medium' | 'large' | 'extra-small';
-  variant?: 'filled' | 'outline' | 'black' | 'destructive' | 'success';
+  size?: "small" | "medium" | "large" | "extra-small";
+  variant?:
+    | "filled"
+    | "accent"
+    | "outline"
+    | "black"
+    | "destructive"
+    | "success";
   className?: string;
-  rounded?: 'full' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'none';
+  rounded?: "full" | "sm" | "md" | "lg" | "xl" | "2xl" | "none";
   icon?: React.ReactNode;
-  iconPosition?: 'right' | 'left';
+  iconPosition?: "right" | "left";
   disabled?: boolean;
   fullWidth?: boolean;
   loading?: boolean;
@@ -23,59 +29,63 @@ const Button: FC<Props> = (props) => {
   const {
     onClick,
     icon,
-    className: extraClass = '',
-    variant = 'outline',
+    className: extraClass = "",
+    variant = "outline",
     children,
-    size = 'small',
+    size = "small",
     disabled = false,
     loading = false,
-    iconPosition = 'right',
-    rounded = 'lg',
+    iconPosition = "right",
+    rounded = "md",
     fullWidth = false,
     role,
     ...rest
   } = props;
   let mainClass = `rounded-${rounded} font-semibold text-center duration-300 ${
     fullWidth
-      ? 'w-full flex items-center justify-center gap-3'
-      : 'w-auto flex items-center gap-2'
+      ? "w-full flex items-center justify-center gap-3"
+      : "w-auto flex items-center gap-2"
   } disabled:opacity-40 disabled:cursor-not-allowed disabled:text-black `;
 
   switch (variant) {
-    case 'filled':
-      mainClass += 'bg-primary text-white hover:bg-primary/80 text-center ';
+    case "filled":
+      mainClass += "bg-primary text-white hover:bg-primary/80 text-center ";
       break;
-    case 'outline':
+    case "accent":
       mainClass +=
-        'bg-transparent border border-primary hover:bg-primary hover:text-white text-primary disabled:border-zinc-500/50 ';
+        "bg-accent text-white hover:bg-accent/80 text-center border border-primary text-black ";
       break;
-    case 'destructive':
+    case "outline":
       mainClass +=
-        'bg-transparent border border-red-500/50 hover:border-red-500 hover:bg-red-500 disabled:hover:bg-transparent hover:text-black disabled:hover:text-red-500 text-red-500 disabled:border-red-500/50 ';
+        "bg-transparent border border-primary hover:bg-primary hover:text-white text-primary disabled:border-zinc-500/50 ";
       break;
-    case 'success':
+    case "destructive":
       mainClass +=
-        'bg-transparent border border-green-500/50 hover:border-green-500 hover:bg-green-500 disabled:hover:bg-transparent hover:text-black disabled:hover:text-green-500 text-green-500 disabled:border-green-500/50 ';
+        "bg-transparent border border-red-500/50 hover:border-red-500 hover:bg-red-500 disabled:hover:bg-transparent hover:text-black disabled:hover:text-red-500 text-red-500 disabled:border-red-500/50 ";
       break;
-    case 'black':
-      mainClass += 'hover:bg-primary/80 bg-primary text-primary ';
+    case "success":
+      mainClass +=
+        "bg-transparent border border-green-500/50 hover:border-green-500 hover:bg-green-500 disabled:hover:bg-transparent hover:text-black disabled:hover:text-green-500 text-green-500 disabled:border-green-500/50 ";
+      break;
+    case "black":
+      mainClass += "hover:bg-primary/80 bg-primary text-primary ";
       break;
     default:
       break;
   }
 
   switch (size) {
-    case 'extra-small':
-      mainClass += 'px-4 py-[6px] text-xs ';
+    case "extra-small":
+      mainClass += "px-4 py-[6px] text-xs ";
       break;
-    case 'small':
-      mainClass += 'px-6 py-2 text-[14px] ';
+    case "small":
+      mainClass += "px-6 py-2 text-[14px] ";
       break;
-    case 'medium':
-      mainClass += 'px-6 py-3 text-[.9rem] ';
+    case "medium":
+      mainClass += "px-6 py-3 text-[.9rem] ";
       break;
-    case 'large':
-      mainClass += 'px-8 py-[14px] ';
+    case "large":
+      mainClass += "px-8 py-[14px] ";
       break;
     default:
       break;
@@ -89,7 +99,7 @@ const Button: FC<Props> = (props) => {
       role={role}
       {...rest}
     >
-      {iconPosition === 'left' && (
+      {iconPosition === "left" && (
         <>
           {loading ? (
             <div className="flex-shrink-0">
@@ -102,10 +112,10 @@ const Button: FC<Props> = (props) => {
       )}
 
       <span className="flex-shrink-0">
-        {!loading ? children : 'Loading...'}
+        {!loading ? children : "Loading..."}
       </span>
 
-      {iconPosition === 'right' && (
+      {iconPosition === "right" && (
         <>
           {loading ? (
             <div className="flex-shrink-0">

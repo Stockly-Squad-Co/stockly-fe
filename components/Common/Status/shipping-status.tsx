@@ -10,7 +10,7 @@ const ShippingStatusChip: FC<Props> = ({ status }) => {
   return (
     <span
       className={cn(
-        'text-[.75rem] p-2 rounded-md',
+        'text-[.75rem] px-2 py-1 rounded-md',
         (status === ShippingStatus.DELIVERED ||
           status === ShippingStatus.PICKED_UP ||
           status === ShippingStatus.SHIPPED) &&

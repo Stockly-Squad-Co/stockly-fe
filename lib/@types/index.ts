@@ -11,6 +11,8 @@ import {
   ShippingStatus,
 } from '../enums';
 
+import { ExpenseFrequency, ExpenseStatus, ExpensesType } from '../utils/enums';
+
 export interface ApiResponse<T = any, M = any> {
   status: boolean;
   msg: string;
@@ -263,3 +265,70 @@ export type StoreOrder = {
     createdAt: Date;
   };
 };
+export interface Transaction {
+  _id: string;
+  transaction_reference: string;
+  transaction_type: string;
+  purpose: string;
+  customer: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+  amount: number;
+  status: 'SUCCESSFUL' | 'PENDING' | 'FAILED';
+  direction: 'INFLOW' | 'OUTFLOW';
+  order: {
+    _id: string;
+    salesChannel: string;
+    sku: string;
+  };
+  createdAt: string;
+}
+
+export interface Expense {
+  _id: string;
+  name: string;
+  description: string;
+  type: ExpensesType;
+  startDate: string;
+  frequency?: ExpenseFrequency;
+  amount: number;
+  status: ExpenseStatus;
+  payee: {
+    _id: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+    note: string;
+    bankName: string;
+    accountNumber: string;
+    accountName: string;
+    bankCode: string;
+  };
+  createdAt: string;
+}
+
+export interface Payee {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  note: string;
+  bankName: string;
+  accountNumber: string;
+  accountName: string;
+  bankCode: string;
+}
+
+export interface ExpenseFormValues {
+  name: string;
+  description: string;
+  type: ExpensesType;
+  frequency: ExpenseFrequency;
+  startDate: string;
+  amount: number;
+  payee: Payee;
+}
