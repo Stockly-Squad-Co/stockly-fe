@@ -1,22 +1,22 @@
-'use client';
-import { getCollections, getProducts } from '@/lib/services/products.service';
-import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import ProductsHeader from './header';
-import Tabs from '@/components/Common/Tabs';
-import ProductsTable from '../Tables/products';
-import CollectionsTable from '../Tables/collections';
+"use client";
+import { getCollections, getProducts } from "@/lib/services/products.service";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import ProductsHeader from "./header";
+import Tabs from "@/components/Common/Tabs";
+import ProductsTable from "../Tables/products";
+import CollectionsTable from "../Tables/collections";
 
 const ProductsPage = () => {
   const [currentTab, setCurrentTab] = useState<0 | 1>(0);
 
   const { data: products, isLoading: productsLoading } = useQuery({
-    queryKey: ['products'],
-    queryFn: getProducts,
+    queryKey: ["products"],
+    queryFn: () => getProducts(),
   });
 
   const { data: collections, isLoading: collectionsLoading } = useQuery({
-    queryKey: ['collections'],
+    queryKey: ["collections"],
     queryFn: getCollections,
   });
 
@@ -29,13 +29,13 @@ const ProductsPage = () => {
           onChangeTab={(idx: typeof currentTab) => setCurrentTab(idx)}
           tabs={[
             {
-              header: 'Inventory',
+              header: "Inventory",
               widget: (
                 <ProductsTable loading={productsLoading} data={products} />
               ),
             },
             {
-              header: 'Collections',
+              header: "Collections",
               widget: (
                 <CollectionsTable
                   loading={collectionsLoading}
