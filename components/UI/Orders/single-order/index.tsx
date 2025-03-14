@@ -17,18 +17,25 @@ import ShippingStatusChip from '@/components/Common/Status/shipping-status';
 import { BiCopy, BiEnvelope, BiPhone } from 'react-icons/bi';
 import { FaWhatsapp } from 'react-icons/fa6';
 import Image from 'next/image';
-import { OrderPaymentStatus, SalesChannel, ShippingStatus } from '@/lib/enums';
+import {
+  OrderPaymentStatus,
+  OrderStatus,
+  SalesChannel,
+  ShippingStatus,
+} from '@/lib/enums';
 import Button from '@/components/Common/Button';
 import { useModal } from '@/lib/providers/ModalProvider';
 import RecordPaymentModal from './record-payment-modal';
 import { toast } from 'sonner';
-import PaymentLinkModal from './payment-link-modal';
 import { cn } from '@/lib/utils/cn';
 import ConfirmationModal from '@/components/Common/Modal/confirmation-modal';
 import { queryClient } from '@/lib/providers';
+import { useSidebar } from '@/lib/providers/SideDrawersProvider';
+import PaymentLinkSidebar from './payment-link-sidebar';
 
 const SingleOrderPage = () => {
   const { showModal } = useModal();
+  const { showSidebar } = useSidebar();
   const { id } = useParams();
 
   const { data: order, isLoading } = useQuery({
@@ -52,7 +59,7 @@ const SingleOrderPage = () => {
       mutationFn: () => generateOrderPaymentLink(order?._id!),
       onSuccess(data) {
         toast.success('Payment link generated successfully');
-        showModal(<PaymentLinkModal link={data?.link} qrCode={data?.qrCode} />);
+        showSidebar(<PaymentLinkSidebar data={data} />);
       },
       onError(error) {
         toast.error(error.message);
@@ -294,8 +301,8 @@ const SingleOrderPage = () => {
                 <OrderPaymentStatusChip status={order?.paymentStatus!} />
               </p>
             </div>
-
-            {order?.paymentStatus != OrderPaymentStatus.PAID ? (
+            {order?.paymentStatus != OrderPaymentStatus.PAID &&
+            order?.orderStatus != OrderStatus.CANCELLED ? (
               <div className="flex items-center mt-6 gap-2">
                 <Button
                   variant="outline"

@@ -1,4 +1,10 @@
-import { Address, ApiResponse, OrderOverview, StoreOrder } from '../@types';
+import {
+  Address,
+  ApiResponse,
+  GeneratePaymentLink,
+  OrderOverview,
+  StoreOrder,
+} from '../@types';
 import { authApi } from '../configs/axios-instance';
 import { OrderPaymentStatus, PaymentMethod, ShippingStatus } from '../enums';
 
@@ -82,9 +88,9 @@ export const updatePaymentStatus = async (
 
 export const generateOrderPaymentLink = async (id: string) => {
   try {
-    const response = await authApi.get<
-      ApiResponse<{ link: string; qrCode: string }>
-    >(`/order/${id}/payment-link`);
+    const response = await authApi.get<ApiResponse<GeneratePaymentLink>>(
+      `/order/${id}/payment-link`
+    );
 
     return response?.data?.data;
   } catch (error: any) {

@@ -367,3 +367,16 @@ export type Discount = {
   endDate: Date;
   createdAt: Date;
 };
+
+export type GeneratePaymentLink = {
+  link: string;
+  qrCode: string;
+  virtual_account: {
+    account_name: string;
+    account_number: string;
+    transaction_reference: string;
+    expected_number: number;
+    bank: 'GTBank';
+    expires_at: Date;
+  };
+};

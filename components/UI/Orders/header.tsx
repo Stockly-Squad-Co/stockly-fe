@@ -18,7 +18,7 @@ const OrdersHeader = () => {
   return (
     <>
       <header className="flex items-center gap-4 justify-between">
-        <h1 className="text-[1.7rem] font-bold">Products</h1>
+        <h1 className="text-[1.7rem] font-bold">Orders</h1>
         <Link href="/orders/new">
           <Button
             variant="filled"
