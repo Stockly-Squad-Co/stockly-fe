@@ -19,7 +19,7 @@ import { RiUser3Line } from "react-icons/ri";
 import Image from "next/image";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoLogOutOutline } from "react-icons/io5";
-import { useSidebar } from "../../../lib/providers/SideDrawerProvider";
+import { useSidebar } from "../../../lib/providers/SidedrawerProvider";
 import Cart from "../../UI/Cart";
 
 interface Props {
