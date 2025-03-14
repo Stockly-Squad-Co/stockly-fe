@@ -1,11 +1,11 @@
-'use client';
-import { Product } from '@/lib/@types';
-import { useModal } from '@/lib/providers/ModalProvider';
-import React, { FC } from 'react';
-import { BiMinus, BiPlus } from 'react-icons/bi';
-import ModifyQuantityModal from '../modals/modify-quantity-modal';
-import Image from 'next/image';
-import { cn } from '@/lib/utils/cn';
+"use client";
+import { Product } from "@/lib/@types";
+import { useModal } from "@/lib/providers/ModalProvider";
+import React, { FC } from "react";
+import { BiMinus, BiPlus } from "react-icons/bi";
+import ModifyQuantityModal from "../modals/modify-quantity-modal";
+import Image from "next/image";
+import { cn } from "@/lib/utils/cn";
 
 interface Props {
   product: Product;
@@ -15,7 +15,7 @@ const ProductQuantity: FC<Props> = ({ product }) => {
   const { showModal } = useModal();
 
   return (
-    <div className="border rounded-md shadow-md p-6 flex-[4] w-full">
+    <div className="rounded-md shadow shadow-gray-200 border p-6 flex-[4] w-full">
       <section className="p-4 bg-gray-100 flex items-center justify-between rounded-md">
         <h2 className="font-semibold text-[.9rem]">Quantity</h2>
 
@@ -63,8 +63,8 @@ const ProductQuantity: FC<Props> = ({ product }) => {
                 height={100}
                 alt="product-image"
                 className={cn(
-                  'rounded-xl border-4 border-transparent transition-all duration-200 hover:border-secondary w-full h-[120px] object-center object-cover',
-                  img === product.display_image && 'border-secondary'
+                  "rounded-xl border-4 border-transparent transition-all duration-200 hover:border-secondary w-full h-[120px] object-center object-cover",
+                  img === product.display_image && "border-secondary"
                 )}
               />
 

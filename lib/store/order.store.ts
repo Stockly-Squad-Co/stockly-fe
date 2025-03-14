@@ -68,7 +68,8 @@ const useOrderStore = create<OrderStore>((set, get) => ({
       const product = state.selectedProducts.find((p) => p._id === productId);
       if (!product) return state;
 
-      if (product.quantity) product.quantity += 1;
+      if (product)
+        product.quantity = product.quantity ? product.quantity + 1 : 1;
 
       return { ...state, selectedProducts: [...state.selectedProducts] };
     }),
@@ -78,7 +79,8 @@ const useOrderStore = create<OrderStore>((set, get) => ({
       const product = state.selectedProducts.find((p) => p._id === productId);
       if (!product) return state;
 
-      if (product.quantity) product.quantity -= 1;
+      if (product)
+        product.quantity = product.quantity ? product.quantity + 1 : 1;
 
       return { ...state, selectedProducts: [...state.selectedProducts] };
     }),

@@ -22,6 +22,7 @@ import { createOrder } from "@/lib/services/order.service";
 import { toast } from "sonner";
 import { paymentMethods } from "@/lib/data";
 import { queryClient } from "@/lib/providers";
+import { BiMinus, BiPlus } from "react-icons/bi";
 
 const CreateOrder = () => {
   const { selectedCustomer, reset: resetStore } = useOrderStore();
@@ -52,7 +53,13 @@ const CreateOrder = () => {
     watch("paymentStatus"),
   ];
 
-  const { selectedProducts, checkExists, toggleProduct } = useOrderStore();
+  const {
+    selectedProducts,
+    checkExists,
+    toggleProduct,
+    increaseQuantity,
+    decreaseQuantity,
+  } = useOrderStore();
 
   const { mutate, isPending: loading } = useMutation({
     mutationFn: createOrder,
@@ -171,86 +178,6 @@ const CreateOrder = () => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="space-y-2 ">
-            <TextField
-              label="Product Name"
-              InputProps={{
-                placeholder: "Enter Name",
-                required: true,
-                ...register("name", {
-                  required: {
-                    value: true,
-                    message: "This field is required",
-                  },
-                }),
-              }}
-              helperText={errors?.name?.message}
-            />
-
-            <TextField
-              label="Product Description (Optional)"
-              multiline={true}
-              InputProps={{
-                placeholder: "Enter description",
-                required: false,
-                ...register("description"),
-              }}
-            />
-
-            <SelectCollections
-              onSelectCollection={(c) => {
-                setValue("collections", [...collections, c]);
-              }}
-              onRemoveCollection={(c) => {
-                setValue(
-                  "collections",
-                  collections.filter((col) => col._id != c._id)
-                );
-              }}
-              selected_collections={collections ?? []}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
-              <TextField
-                label="Price"
-                InputProps={{
-                  required: true,
-                  type: "number",
-                  placeholder: "Enter amount",
-                  ...register("price", {
-                    required: {
-                      value: true,
-                      message: "This field is required",
-                    },
-                    min: {
-                      value: 0,
-                      message: "Price must be greater than 0",
-                    },
-                  }),
-                }}
-                helperText={errors?.price?.message}
-              />
-              <TextField
-                label="Cost Price"
-                InputProps={{
-                  required: true,
-                  type: "number",
-                  ...register("costPrice", {
-                    required: {
-                      value: true,
-                      message: "This field is required",
-                    },
-                    min: {
-                      value: 0,
-                      message: "Price must be greater than 0",
-                    },
-                  }),
-                }}
-                helperText={errors?.costPrice?.message}
-              />
-            </div>
-          </div> */}
           </FormSection>
 
           <FormSection title={`Products (${selectedProducts.length})`}>
@@ -282,19 +209,48 @@ const CreateOrder = () => {
                       </div>
 
                       <div className="text-sm">
-                        <p>{product.name}</p>
-                        <p>
-                          {product.is_discounted ? (
-                            <span>
-                              {formatNaira(product.discountedPrice || 0)}{" "}
-                              <span className="text-xs text-gray-400 line-through">
-                                {formatNaira(product.price)}
+                        <div>
+                          <p>{product.name}</p>
+                          <p>
+                            {product.is_discounted ? (
+                              <span>
+                                {formatNaira(product.discountedPrice || 0)}{" "}
+                                <span className="text-xs text-gray-400 line-through">
+                                  {formatNaira(product.price)}
+                                </span>
                               </span>
-                            </span>
-                          ) : (
-                            `${formatNaira(product.price)}`
-                          )}
-                        </p>
+                            ) : (
+                              `${formatNaira(product.price)}`
+                            )}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center select-none text-sm">
+                          <button
+                            className="size-5 border rounded flex items-center justify-center"
+                            type="button"
+                            onClick={(e) => (
+                              e.stopPropagation(), decreaseQuantity(product._id)
+                            )}
+                            disabled={product.quantity === 1}
+                          >
+                            <BiMinus />
+                          </button>
+
+                          <button className="size-5 flex items-center justify-center">
+                            <span>{product.quantity || 1}</span>
+                          </button>
+
+                          <button
+                            className="size-5 border rounded flex items-center justify-center"
+                            type="button"
+                            onClick={(e) => (
+                              e.stopPropagation(), increaseQuantity(product._id)
+                            )}
+                          >
+                            <BiPlus />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -318,32 +274,25 @@ const CreateOrder = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">
                   <label className="text-sm">
-                    Payment Method <span className="text-red-500">*</span>
+                    Payment Status <span className="text-red-500">*</span>
                   </label>
-                  <select
-                    className={`w-full bg-transparent duration-200 focus:ring ring-gray-200 p-3 rounded-lg border text-sm ${
-                      errors.paymentMethod
-                        ? "border-red-500"
-                        : "border-gray-200"
-                    }`}
-                    onChange={(e) =>
-                      setValue("paymentMethod", e.target.value as PaymentMethod)
-                    }
-                  >
-                    <option
-                      value=""
-                      className="text-gray-400"
-                      disabled
-                      selected
-                    >
-                      Select payment method
-                    </option>
-                    {paymentMethods.map((method) => (
-                      <option key={method} value={method}>
-                        {method.replace("_", " ")}
-                      </option>
+
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {["Paid", "Unpaid"].map((key, id) => (
+                      <button
+                        type="button"
+                        key={id}
+                        className={` text-sm duration-300 flex-shrink-0 capitalize px-4 py-2 rounded-md text-primary font-medium ${
+                          paymentStatus === key
+                            ? "bg-primary text-white"
+                            : "bg-primary/5"
+                        }`}
+                        onClick={() => setValue("paymentStatus", key)}
+                      >
+                        {key.replace("_", " ")}
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -378,28 +327,35 @@ const CreateOrder = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm">
-                  Payment Status <span className="text-red-500">*</span>
-                </label>
-
-                <div className="flex items-center gap-2 flex-wrap">
-                  {["Paid", "Unpaid"].map((key, id) => (
-                    <button
-                      type="button"
-                      key={id}
-                      className={` text-sm duration-300 flex-shrink-0 capitalize px-4 py-2 rounded-md text-primary font-medium ${
-                        paymentStatus === key
-                          ? "bg-primary text-white"
-                          : "bg-primary/5"
-                      }`}
-                      onClick={() => setValue("paymentStatus", key)}
+              {paymentStatus === "Paid" && (
+                <div className="space-y-2">
+                  <label className="text-sm">Payment Method</label>
+                  <select
+                    className={`w-full bg-transparent duration-200 focus:ring ring-gray-200 p-3 rounded-lg border text-sm ${
+                      errors.paymentMethod
+                        ? "border-red-500"
+                        : "border-gray-200"
+                    }`}
+                    onChange={(e) =>
+                      setValue("paymentMethod", e.target.value as PaymentMethod)
+                    }
+                  >
+                    <option
+                      value=""
+                      className="text-gray-400"
+                      disabled
+                      selected
                     >
-                      {key.replace("_", " ")}
-                    </button>
-                  ))}
+                      Select payment method
+                    </option>
+                    {paymentMethods.map((method) => (
+                      <option key={method} value={method}>
+                        {method.replace("_", " ")}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              </div>
+              )}
 
               <div className="flex items-center justify-end gap-2">
                 <Button type="submit" variant="accent" loading={loading}>
