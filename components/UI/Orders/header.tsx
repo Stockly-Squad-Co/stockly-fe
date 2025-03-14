@@ -1,17 +1,17 @@
-'use client';
-import SmallContentBox from '@/components/Common/Box/small';
-import Button from '@/components/Common/Button';
-import { getOrdersOverview } from '@/lib/services/order.service';
-import { formatNaira } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import React, { FC } from 'react';
-import { BiPlus } from 'react-icons/bi';
-import { LuBox, LuHandCoins, LuShoppingBag, LuTag } from 'react-icons/lu';
+"use client";
+import SmallContentBox from "@/components/Common/Box/small";
+import Button from "@/components/Common/Button";
+import { getOrdersOverview } from "@/lib/services/order.service";
+import { formatNaira } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import React, { FC } from "react";
+import { BiPlus } from "react-icons/bi";
+import { LuBox, LuHandCoins, LuShoppingBag, LuTag } from "react-icons/lu";
 
 const OrdersHeader = () => {
-  const { data: overview } = useQuery({
-    queryKey: ['orders', 'overview'],
+  const { data: overview, isPending: loading } = useQuery({
+    queryKey: ["orders", "overview"],
     queryFn: getOrdersOverview,
   });
 
@@ -45,7 +45,7 @@ const OrdersHeader = () => {
             boxBg="#f0fdf4"
             iconColor="#16a34a"
             icon={<LuHandCoins />}
-            value={formatNaira(overview?.amountOwed!)}
+            value={loading ? "--.--" : formatNaira(overview?.amountOwed!)}
             boxKey="Amount Owed"
           />
 

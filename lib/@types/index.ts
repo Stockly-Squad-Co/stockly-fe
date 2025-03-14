@@ -98,12 +98,12 @@ export type Customer = {
   customer_code: string;
   status: 'ACTIVE' | 'INACTIVE';
   shipping_address: Address;
-  createdAt: Date;
+  createdAt: string;
   purchase_history: PurchaseHistory[];
   totalAmountSpent: number;
   totalOrders: number;
   totalOrdersValue: number;
-  lastOrderDate: Date;
+  lastOrderDate: string;
 };
 
 export type PurchaseHistory = {
@@ -380,3 +380,20 @@ export type GeneratePaymentLink = {
     expires_at: Date;
   };
 };
+export type OrderType = 'PUBLISHED' | 'UNPUBLISHED' | 'DELETED';
+
+export type OrderStock = 'lowStock' | 'outOfStock' | 'inStock';
+
+export type OrderPickupType = 'PICKUP' | 'DELIVERY';
+
+export interface CreateOrder {
+  cart: { product: string; quantity: number }[];
+  customer: string;
+  salesChannel: SalesChannel;
+  orderDate: string;
+  paymentMethod: PaymentMethod;
+  paymentStatus: string;
+  transaction?: string;
+  type: OrderPickupType;
+  shipping_rule: string;
+}

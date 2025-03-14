@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import TableComponent from '@/components/Common/Table';
-import { StoreOrder } from '@/lib/@types';
-import React, { FC } from 'react';
-import { columns } from './columns';
-import { useRouter } from 'next/navigation';
+import TableComponent from "@/components/Common/Table";
+import { StoreOrder } from "@/lib/@types";
+import React, { FC } from "react";
+import { columns } from "./columns";
+import { useRouter } from "next/navigation";
 
 interface Props {
   data?: StoreOrder[];
@@ -13,6 +13,7 @@ interface Props {
 
 const OrdersTable: FC<Props> = ({ data, loading }) => {
   const { push } = useRouter();
+
   return (
     <TableComponent
       rowOnClick={(row) => push(`/orders/${row?._id}`)}

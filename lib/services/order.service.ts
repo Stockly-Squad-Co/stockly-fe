@@ -4,9 +4,10 @@ import {
   GeneratePaymentLink,
   OrderOverview,
   StoreOrder,
+  CreateOrder,
 } from '../@types';
 import { authApi } from '../configs/axios-instance';
-import { OrderPaymentStatus, PaymentMethod, ShippingStatus } from '../enums';
+import { PaymentMethod, ShippingStatus } from '../enums';
 
 export const getOrdersOverview = async () => {
   try {
@@ -23,6 +24,19 @@ export const getOrdersOverview = async () => {
 export const getOrders = async () => {
   try {
     const response = await authApi.get<ApiResponse<StoreOrder[]>>('/order');
+
+    return response?.data?.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+  }
+};
+
+export const createOrder = async (body: CreateOrder) => {
+  try {
+    const response = await authApi.post<ApiResponse<StoreOrder>>(
+      '/order',
+      body
+    );
 
     return response?.data?.data;
   } catch (error: any) {

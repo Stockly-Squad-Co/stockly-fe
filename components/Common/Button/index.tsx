@@ -57,7 +57,7 @@ const Button: FC<Props> = (props) => {
       break;
     case "outline":
       mainClass +=
-        "bg-transparent border border-primary hover:bg-primary hover:text-white text-primary disabled:border-zinc-500/50 ";
+        "bg-transparent border border-primary hover:bg-primary/5 text-primary disabled:border-zinc-500/50 ";
       break;
     case "destructive":
       mainClass +=

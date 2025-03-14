@@ -4,6 +4,8 @@ import {
   CreateCollection,
   CreateProduct,
   InventoryOverview,
+  OrderStock,
+  OrderType,
   Product,
 } from '../@types';
 import { authApi } from '../configs/axios-instance';
@@ -21,9 +23,24 @@ export const getInventoryOverview = async () => {
   }
 };
 
-export const getProducts = async () => {
+export const getProducts = async (
+  params: {
+    search?: string;
+    collection?: string;
+    status?: OrderType;
+    stock?: OrderStock;
+  } = {}
+) => {
+  const searchParams = new URLSearchParams();
+  if (params.search) searchParams.append('search', params.search);
+  if (params.collection) searchParams.append('collection', params.collection);
+  if (params.status) searchParams.append('status', params.status);
+  if (params.stock) searchParams.append('stock', params.stock);
+
   try {
-    const response = await authApi.get<ApiResponse<Product[]>>('/product');
+    const response = await authApi.get<ApiResponse<Product[]>>(
+      `/product?${searchParams}`
+    );
 
     return response?.data?.data;
   } catch (error: any) {
