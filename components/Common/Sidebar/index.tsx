@@ -1,27 +1,14 @@
 import { opacityVariant } from "@/lib/data/variants";
 import { motion } from "framer-motion";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 
 const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-const variant = {
-  initial: { width: 0 },
-  animate: {
-    opacity: 1,
-    width: isMobile ? "90%" : "30%",
-    transition: {
-      ease: "easeInOut",
-      damping: 5,
-      duration: 0.2,
-    },
-  },
-  exit: { width: 0 },
-};
 
 type SidebarCompProps = {
   isOpen?: boolean;
   onClose: () => void;
   isAutomatic?: boolean;
+  width?: string | number;
 } & React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
@@ -32,9 +19,27 @@ const SidebarComp: FC<SidebarCompProps> = ({
   isOpen = true,
   onClose,
   isAutomatic = true,
+  width,
   ...rest
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  const variant = useMemo(
+    () => ({
+      initial: { width: 0 },
+      animate: {
+        opacity: 1,
+        width: isMobile ? "90%" : width || "30%",
+        transition: {
+          ease: "easeInOut",
+          damping: 5,
+          duration: 0.2,
+        },
+      },
+      exit: { width: 0 },
+    }),
+    [width]
+  );
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -57,7 +62,7 @@ const SidebarComp: FC<SidebarCompProps> = ({
   return (
     <>
       {isOpen && (
-        <div className="fixed top-0 right-0 min-w-full min-h-full z-[4000] overflow-hidden">
+        <div className="fixed top-0 right-0 min-w-full min-h-full z-[2999] overflow-hidden">
           {/* background */}
           <motion.div
             {...opacityVariant}
@@ -68,7 +73,7 @@ const SidebarComp: FC<SidebarCompProps> = ({
           {/* modal */}
           <motion.div
             {...variant}
-            className="h-screen overflow-y-auto z-[500] fixed top-0 right-0 bg-white shadow-2xl"
+            className="h-screen overflow-y-auto z-[299] fixed top-0 right-0 bg-white overflow-hidden shadow-2xl"
           >
             <div ref={ref} {...rest}>
               {children}

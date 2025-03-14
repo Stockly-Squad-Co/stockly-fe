@@ -4,30 +4,47 @@ import {
   CreateCollection,
   CreateProduct,
   InventoryOverview,
+  OrderStock,
+  OrderType,
   Product,
-} from '../@types';
-import { authApi } from '../configs/axios-instance';
-import { ProductStatus } from '../enums';
+} from "../@types";
+import { authApi } from "../configs/axios-instance";
+import { ProductStatus } from "../enums";
 
 export const getInventoryOverview = async () => {
   try {
     const response = await authApi.get<ApiResponse<InventoryOverview>>(
-      '/product/inventory-overview'
+      "/product/inventory-overview"
     );
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
-export const getProducts = async () => {
+export const getProducts = async (
+  params: {
+    search?: string;
+    collection?: string;
+    status?: OrderType;
+    stock?: OrderStock;
+  } = {}
+) => {
+  const searchParams = new URLSearchParams();
+  if (params.search) searchParams.append("search", params.search);
+  if (params.collection) searchParams.append("collection", params.collection);
+  if (params.status) searchParams.append("status", params.status);
+  if (params.stock) searchParams.append("stock", params.stock);
+
   try {
-    const response = await authApi.get<ApiResponse<Product[]>>('/product');
+    const response = await authApi.get<ApiResponse<Product[]>>(
+      `/product?${searchParams}`
+    );
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -37,7 +54,7 @@ export const getProduct = async (id: string) => {
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -47,19 +64,19 @@ export const deleteProduct = async (id: string) => {
 
     return response?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
 export const getCollections = async () => {
   try {
     const response = await authApi.get<ApiResponse<Collections[]>>(
-      '/product/collection'
+      "/product/collection"
     );
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -71,7 +88,7 @@ export const getCollection = async (id: string) => {
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -81,7 +98,7 @@ export const deleteCollection = async (id: string) => {
 
     return response?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -91,12 +108,12 @@ export const updateProductStatus = async (
 ) => {
   const formData = new FormData();
 
-  formData.append('status', status);
+  formData.append("status", status);
 
   try {
     await authApi.put(`/product/${id}`, formData);
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -107,17 +124,17 @@ export const modifyProductQuantity = async ({
 }: {
   id: string;
   qty: number;
-  type: 'increase' | 'decrease';
+  type: "increase" | "decrease";
 }) => {
   try {
     await authApi.patch(
-      `/product/${id}/${type === 'increase' ? 'increase-qty' : 'decrease-qty'}`,
+      `/product/${id}/${type === "increase" ? "increase-qty" : "decrease-qty"}`,
       {
         quantity: qty,
       }
     );
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
@@ -125,40 +142,40 @@ export const createCollections = async (body: CreateCollection) => {
   try {
     await authApi.post(`/product/collection`, body);
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
 
 export const createProduct = async (body: CreateProduct) => {
   const formData = new FormData();
 
-  formData.append('name', body.name);
-  formData.append('description', body.description);
-  formData.append('thumbnailImageIndex', body.thumbnailImageIndex as any);
-  formData.append('price', body.price as any);
-  formData.append('costPrice', body.costPrice as any);
-  formData.append('quantityAvailable', body.quantityAvailable as any);
-  formData.append('lowStockLevelAlert', body.lowStockLevelAlert as any);
+  formData.append("name", body.name);
+  formData.append("description", body.description);
+  formData.append("thumbnailImageIndex", body.thumbnailImageIndex as any);
+  formData.append("price", body.price as any);
+  formData.append("costPrice", body.costPrice as any);
+  formData.append("quantityAvailable", body.quantityAvailable as any);
+  formData.append("lowStockLevelAlert", body.lowStockLevelAlert as any);
 
   for (const col of body.collections) {
-    formData.append('collections', col._id);
+    formData.append("collections", col._id);
   }
 
   for (const image of body.images) {
-    formData.append('images', image);
+    formData.append("images", image);
   }
 
   if (body.unit) {
-    formData.append('unit', body.unit);
+    formData.append("unit", body.unit);
   }
 
   if (body.unit_value) {
-    formData.append('unit_value', body.unit_value as any);
+    formData.append("unit_value", body.unit_value as any);
   }
 
   try {
     await authApi.post(`/product`, formData);
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+    throw new Error(error?.response?.data?.msg || "Something went wrong");
   }
 };
