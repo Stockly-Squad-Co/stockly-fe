@@ -1,5 +1,5 @@
-import { ApiResponse } from "../@types";
-import { publicApi } from "../configs/axios-instance";
+import { ApiResponse } from '../@types';
+import { authApi, publicApi } from '../configs/axios-instance';
 
 export const getBanks = async () => {
   try {
@@ -7,10 +7,10 @@ export const getBanks = async () => {
       data: { data },
     } = await publicApi.get<
       ApiResponse<{ bank_name: string; bank_code: string }[]>
-    >("payment/banks");
+    >('payment/banks');
     return data;
   } catch (err: any) {
-    throw new Error(err?.response?.data?.msg || "Fetching banks failed");
+    throw new Error(err?.response?.data?.msg || 'Fetching banks failed');
   }
 };
 
@@ -19,7 +19,7 @@ export const lookupAccount = async (body: {
   accountNumber: string;
 }) => {
   if (!body.bankCode || !body.accountNumber || body.accountNumber.length !== 10)
-    throw new Error("incomplete.");
+    throw new Error('incomplete.');
 
   try {
     const {
@@ -31,10 +31,20 @@ export const lookupAccount = async (body: {
         bank_code: string;
         bank_name: string;
       }>
-    >("/payment/lookup-account", body);
+    >('/payment/lookup-account', body);
 
     return data;
   } catch (err: any) {
-    throw new Error(err?.response?.data?.msg || "Account lookup failed");
+    throw new Error(err?.response?.data?.msg || 'Account lookup failed');
+  }
+};
+
+export const withdraw = async (amount: number) => {
+  try {
+    const response = await authApi.post('/payment/withdraw', { amount });
+
+    return response?.data;
+  } catch (err: any) {
+    throw new Error(err?.response?.data?.msg || 'Account lookup failed');
   }
 };

@@ -52,13 +52,13 @@ export default function TextField({
           <textarea
             {...InputProps}
             disabled={disabled}
-            className={`w-full h-[150px] md:h-[200px] p-[12px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 resize-none ${InputProps?.className}`}
+            className={`w-full h-[150px] md:h-[200px] p-[12px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 resize-none disabled:cursor-not-allowed ${InputProps?.className}`}
           />
         ) : (
           <input
             {...InputProps}
             disabled={disabled}
-            className={`w-full p-[12px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 ${InputProps?.className}`}
+            className={`w-full p-[12px] outline-none text-[#444] text-[.8rem] rounded-md border-[1.2px] focus:border-primary transition-all disabled:opacity-50 duration-300 disabled:cursor-not-allowed ${InputProps?.className}`}
           />
         )}
 

@@ -12,6 +12,9 @@ import { useSidebar } from '@/lib/providers/SideDrawersProvider';
 import TransactionOverviewSidebar from './transaction-overview';
 import { formatNaira } from '@/lib/utils';
 import Button from '@/components/Common/Button';
+import WithdrawSidebar from './withdraw-sidebar';
+import SmallContentBox from '@/components/Common/Box/small';
+import { BiMoney } from 'react-icons/bi';
 
 const Transactions = () => {
   const { data: transactions, isPending: loading } = useQuery({
@@ -39,13 +42,54 @@ const Transactions = () => {
           {formatNaira(wallet?.balance ?? 0)}
         </p>
 
-        <Button
-          variant="outline"
-          size="extra-small"
-          className="!border-white !text-white !hover:border-white hover:!text-white ml-auto mt-3"
-        >
-          Withdraw
-        </Button>
+        {!gettingWallet && (
+          <Button
+            variant="outline"
+            size="extra-small"
+            className="!border-white !text-white !hover:border-white hover:!text-white ml-auto mt-3"
+            onClick={() =>
+              showSidebar(
+                <WithdrawSidebar wallet_balance={wallet?.balance || 0} />
+              )
+            }
+          >
+            Withdraw
+          </Button>
+        )}
+      </div>
+
+      <div className="grid grid-cols-4 gap-4">
+        <SmallContentBox
+          boxBg="#e0f2fe"
+          iconColor="#0369a1"
+          icon={<BiMoney />}
+          value={overview?.totalOffline}
+          boxKey="Total Offlines"
+        />
+
+        <SmallContentBox
+          boxBg="#f0fdf4"
+          iconColor="#16a34a"
+          icon={<BiMoney />}
+          value={overview?.totalOnline}
+          boxKey="Total Online"
+        />
+
+        <SmallContentBox
+          boxBg="#fef2f2"
+          iconColor="#b91c1c"
+          icon={<BiMoney />}
+          value={overview?.totalOffline}
+          boxKey="Total Offline transactions"
+        />
+
+        <SmallContentBox
+          boxBg="#fefce8"
+          iconColor="#ca8a04"
+          icon={<BiMoney />}
+          value={overview?.totalPayouts}
+          boxKey="Total Payouts"
+        />
       </div>
 
       <TableComponent
