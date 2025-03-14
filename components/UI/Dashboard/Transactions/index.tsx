@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import TableComponent from "@/components/Common/Table";
-import { getTransactions } from "@/lib/services/transaction.service";
-import { useQuery } from "@tanstack/react-query";
-import columns from "./columns";
-import { useSidebar } from "@/lib/providers/SidedrawerProvider";
-import TransactionOverviewSidebar from "./transaction-overview";
+import TableComponent from '@/components/Common/Table';
+import { getTransactions } from '@/lib/services/transaction.service';
+import { useQuery } from '@tanstack/react-query';
+import columns from './columns';
+import { useSidebar } from '@/lib/providers/SideDrawersProvider';
+import TransactionOverviewSidebar from './transaction-overview';
 
 const Transactions = () => {
   const { data: transactions, isPending: loading } = useQuery({
     queryFn: getTransactions,
-    queryKey: ["transactions"],
+    queryKey: ['transactions'],
   });
 
   const { showSidebar } = useSidebar();
@@ -19,8 +19,8 @@ const Transactions = () => {
     <div className="mt-4">
       <TableComponent
         heading={{
-          title: "Transactions",
-          description: "View all transactions",
+          title: 'Transactions',
+          description: 'View all transactions',
         }}
         columns={columns}
         data={transactions || []}

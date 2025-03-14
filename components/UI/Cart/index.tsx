@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useSidebar } from "../../../lib/providers/SidedrawerProvider";
-import useCartStore from "../../../lib/store/cart.store";
-import SidebarComp from "../../Common/Sidebar";
-import { formatNaira } from "../../../lib/utils/helpers";
-import { CiTrash } from "react-icons/ci";
-import { AnimatePresence, motion } from "framer-motion";
-import { BiMinus, BiPlus } from "react-icons/bi";
-import { IoBagCheckOutline } from "react-icons/io5";
-import { useModal } from "../../../lib/providers/ModalProvider";
-import CheckoutModal from "../Product/checkout-modal";
+import Image from 'next/image';
+import { useSidebar } from '../../../lib/providers/SideDrawersProvider';
+import useCartStore from '../../../lib/store/cart.store';
+import SidebarComp from '../../Common/Sidebar';
+import { formatNaira } from '../../../lib/utils/helpers';
+import { CiTrash } from 'react-icons/ci';
+import { AnimatePresence, motion } from 'framer-motion';
+import { BiMinus, BiPlus } from 'react-icons/bi';
+import { IoBagCheckOutline } from 'react-icons/io5';
+import { useModal } from '../../../lib/providers/ModalProvider';
+import CheckoutModal from '../Product/checkout-modal';
 
 const Cart = () => {
   const { hideSidebar } = useSidebar();
@@ -60,10 +60,10 @@ const Cart = () => {
                         <div className="">
                           <p className="font-semibold">{product.name}</p>
                           <p className="text-sm text-gray-500">
-                            {product.quantity} x{" "}
+                            {product.quantity} x{' '}
                             {product.is_discounted ? (
                               <span>
-                                {formatNaira(product.discountedPrice || 0)}{" "}
+                                {formatNaira(product.discountedPrice || 0)}{' '}
                                 <span className="line-through text-xs">
                                   {formatNaira(product.price)}
                                 </span>

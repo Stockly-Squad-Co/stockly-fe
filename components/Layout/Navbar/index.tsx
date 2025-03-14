@@ -1,26 +1,26 @@
-"use client";
-import Link from "next/link";
-import { useState } from "react";
-import { SiNanostores } from "react-icons/si";
-import { AnimatePresence, motion } from "framer-motion";
-import { navLinks } from "@/lib/data";
-import { fadeToBottomVariant } from "@/lib/data/variants";
-import { useRouter } from "next/navigation";
-import { FiChevronDown } from "react-icons/fi";
-import { signOut, useSession } from "next-auth/react";
-import { FaOpencart } from "react-icons/fa";
-import { BiSearchAlt } from "react-icons/bi";
-import { useModal } from "@/lib/providers/ModalProvider";
-import SearchModal from "../../UI/Search/search-modal";
-import useCartStore from "@/lib/store/cart.store";
-import useUserInfo from "@/lib/hooks/useUserInfo";
-import useDropDown from "@/lib/hooks/useDropdown";
-import { RiUser3Line } from "react-icons/ri";
-import Image from "next/image";
-import { LuLayoutDashboard } from "react-icons/lu";
-import { IoLogOutOutline } from "react-icons/io5";
-import { useSidebar } from "../../../lib/providers/SidedrawerProvider";
-import Cart from "../../UI/Cart";
+'use client';
+import Link from 'next/link';
+import { useState } from 'react';
+import { SiNanostores } from 'react-icons/si';
+import { AnimatePresence, motion } from 'framer-motion';
+import { navLinks } from '@/lib/data';
+import { fadeToBottomVariant } from '@/lib/data/variants';
+import { useRouter } from 'next/navigation';
+import { FiChevronDown } from 'react-icons/fi';
+import { signOut, useSession } from 'next-auth/react';
+import { FaOpencart } from 'react-icons/fa';
+import { BiSearchAlt } from 'react-icons/bi';
+import { useModal } from '@/lib/providers/ModalProvider';
+import SearchModal from '../../UI/Search/search-modal';
+import useCartStore from '@/lib/store/cart.store';
+import useUserInfo from '@/lib/hooks/useUserInfo';
+import useDropDown from '@/lib/hooks/useDropdown';
+import { RiUser3Line } from 'react-icons/ri';
+import Image from 'next/image';
+import { LuLayoutDashboard } from 'react-icons/lu';
+import { IoLogOutOutline } from 'react-icons/io5';
+import { useSidebar } from '../../../lib/providers/SideDrawersProvider';
+import Cart from '../../UI/Cart';
 
 interface Props {
   showBanner?: boolean;
@@ -52,7 +52,7 @@ const Navbar = ({ showBanner }: Props) => {
       )}
       <div className="container rounded-full py-3 flex items-center justify-between">
         <div>
-          <Link href={"/"} className="text-primary flex items-center gap-1">
+          <Link href={'/'} className="text-primary flex items-center gap-1">
             <SiNanostores />
             <span>Stockly</span>
           </Link>
@@ -94,7 +94,7 @@ const Navbar = ({ showBanner }: Props) => {
                         <Link
                           href={`/${link.title.toLowerCase()}/${sublink
                             .toLowerCase()
-                            .replace(/\s+/g, "-")}`}
+                            .replace(/\s+/g, '-')}`}
                           className="block px-4 py-2 text-sm text-text hover:bg-gray-100"
                         >
                           {sublink}
@@ -145,7 +145,7 @@ const Navbar = ({ showBanner }: Props) => {
                     <div className="text-center space-y-1">
                       <div className="size-16 mx-auto rounded-full relative overflow-hidden">
                         <Image
-                          src={user?.profilePicture || "/images/avatar.png"}
+                          src={user?.profilePicture || '/images/avatar.png'}
                           alt="user"
                           width={100}
                           height={100}
@@ -158,7 +158,7 @@ const Navbar = ({ showBanner }: Props) => {
                     <div className="flex items-center justify-center gap-2">
                       <button
                         className="size-8 rounded-full flex border duration-300 hover:bg-gray-50 items-center justify-center"
-                        onClick={() => router.push("/dashboard")}
+                        onClick={() => router.push('/dashboard')}
                       >
                         <LuLayoutDashboard />
                       </button>
@@ -184,13 +184,13 @@ const Navbar = ({ showBanner }: Props) => {
             <>
               <button
                 className="text-primary rounded-lg border-2 border-primary px-8 py-[10px] duration-300 hover:bg-primary hover:text-white"
-                onClick={() => router.push("/login")}
+                onClick={() => router.push('/login')}
               >
                 Login
               </button>
               <button
                 className="text-black rounded-lg border-2 border-primary bg-accent px-8 py-[10px] duration-300"
-                onClick={() => router.push("/register")}
+                onClick={() => router.push('/register')}
               >
                 Sign Up
               </button>

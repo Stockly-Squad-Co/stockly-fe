@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import TableComponent from "@/components/Common/Table";
-import { useQuery } from "@tanstack/react-query";
-import columns from "./columns";
-import { useSidebar } from "@/lib/providers/SidedrawerProvider";
-import { getExpenses } from "@/lib/services/expense.service";
-import Button from "@/components/Common/Button";
-import { FaPlus } from "react-icons/fa";
-import { HiUpload } from "react-icons/hi";
-import { useRouter } from "next/navigation";
+import TableComponent from '@/components/Common/Table';
+import { useQuery } from '@tanstack/react-query';
+import columns from './columns';
+import { useSidebar } from '@/lib/providers/SideDrawersProvider';
+import { getExpenses } from '@/lib/services/expense.service';
+import Button from '@/components/Common/Button';
+import { FaPlus } from 'react-icons/fa';
+import { HiUpload } from 'react-icons/hi';
+import { useRouter } from 'next/navigation';
 
 const Expenses = () => {
   const { data: expenses, isPending: loading } = useQuery({
     queryFn: getExpenses,
-    queryKey: ["expenses"],
+    queryKey: ['expenses'],
   });
 
   const { showSidebar } = useSidebar();
@@ -34,7 +34,7 @@ const Expenses = () => {
             variant="accent"
             icon={<FaPlus />}
             className="px-5"
-            onClick={() => router.push("/expenses/create")}
+            onClick={() => router.push('/expenses/create')}
           >
             Create
           </Button>

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import SidebarComp from "@/components/Common/Sidebar";
-import { Transaction } from "@/lib/@types";
-import { useSidebar } from "@/lib/providers/SidedrawerProvider";
-import { formatNaira } from "@/lib/utils";
-import { cn } from "@/lib/utils/cn";
-import { formatDistanceToNow } from "date-fns";
+import SidebarComp from '@/components/Common/Sidebar';
+import { Transaction } from '@/lib/@types';
+import { useSidebar } from '@/lib/providers/SideDrawersProvider';
+import { formatNaira } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
+import { formatDistanceToNow } from 'date-fns';
 
 const TransactionOverviewSidebar = (transaction: Transaction) => {
   const { hideSidebar } = useSidebar();
@@ -32,9 +32,9 @@ const TransactionOverviewSidebar = (transaction: Transaction) => {
             <p>Status:</p>
             <p
               className={cn({
-                "text-green-500": transaction.status === "SUCCESSFUL",
-                "text-red-500": transaction.status === "FAILED",
-                "text-yellow-500": transaction.status === "PENDING",
+                'text-green-500': transaction.status === 'SUCCESSFUL',
+                'text-red-500': transaction.status === 'FAILED',
+                'text-yellow-500': transaction.status === 'PENDING',
               })}
             >{`${transaction.status}`}</p>
           </div>
