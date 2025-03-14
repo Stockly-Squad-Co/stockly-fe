@@ -45,7 +45,6 @@ const Expenses = () => {
         columns={columns}
         data={expenses || []}
         loading={loading}
-        rowOnClick={(row) => {}}
       />
     </div>
   );
