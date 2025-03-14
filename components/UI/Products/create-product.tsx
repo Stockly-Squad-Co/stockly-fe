@@ -9,13 +9,18 @@ import SelectField from '@/components/Common/Inputs/select-field';
 import TextField from '@/components/Common/Inputs/text-field';
 import { CreateProduct } from '@/lib/@types';
 import { ProductUnits } from '@/lib/enums';
+import { createProduct } from '@/lib/services/products.service';
 import { cn } from '@/lib/utils/cn';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 type Inputs = CreateProduct;
 
 const CreateProductPage = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     reset,
@@ -38,8 +43,29 @@ const CreateProductPage = () => {
     'unit',
   ]);
 
+  const { isPending: creatingProduct, mutateAsync } = useMutation({
+    mutationKey: ['products', 'create'],
+    mutationFn: createProduct,
+    onSuccess() {
+      toast.success('Product created successfully');
+      router.push('/products');
+    },
+  });
+
+  const onSubmit = async (e: Inputs) => {
+    if (!e.images?.length) {
+      return toast.error('select at least one image');
+    }
+
+    if (e.thumbnailImageIndex >= e.images?.length) {
+      e.thumbnailImageIndex = 0;
+    }
+
+    await mutateAsync(e);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-4 md:p-6">
         <FormContainer title="Create Product">
           <FormSection title="Product Images">
@@ -140,7 +166,7 @@ const CreateProductPage = () => {
                   label="Price"
                   InputProps={{
                     required: true,
-                    type: 'tel',
+                    type: 'number',
                     placeholder: 'Enter amount',
                     ...register('price', {
                       required: {
@@ -159,7 +185,7 @@ const CreateProductPage = () => {
                   label="Cost Price"
                   InputProps={{
                     required: true,
-                    type: 'tel',
+                    type: 'number',
                     ...register('costPrice', {
                       required: {
                         value: true,
@@ -178,11 +204,12 @@ const CreateProductPage = () => {
           </FormSection>
 
           <FormSection title="Product Inventory">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4 items-center">
               <TextField
                 label="Stock Quantity"
                 InputProps={{
                   required: true,
+                  placeholder: 'Enter quantity',
                   type: 'number',
                   ...register('quantityAvailable', {
                     required: {
@@ -194,6 +221,22 @@ const CreateProductPage = () => {
                 helperText={errors?.quantityAvailable?.message}
               />
 
+              <TextField
+                label="Low Stock Alert"
+                InputProps={{
+                  required: true,
+                  placeholder: 'Enter low stock level alert',
+                  type: 'number',
+                  ...register('lowStockLevelAlert', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                  }),
+                }}
+                helperText={errors?.lowStockLevelAlert?.message}
+              />
+
               <SelectField
                 options={Object.values(ProductUnits).map((u) => ({
                   label: u,
@@ -202,6 +245,22 @@ const CreateProductPage = () => {
                 label="Unit (optional)"
                 data={{ label: unit, value: unit }}
                 onValueChange={(e) => setValue('unit', e)}
+              />
+
+              <TextField
+                label="Unit Value"
+                InputProps={{
+                  type: 'number',
+                  placeholder: 'E.g "2"pc of singlets',
+                  ...register('unit_value', {
+                    validate(value, otherValues) {
+                      if (value && !otherValues.unit) {
+                        return 'To add a unit value you need to select the unit';
+                      }
+                    },
+                  }),
+                }}
+                helperText={errors?.unit_value?.message}
               />
             </div>
           </FormSection>
@@ -215,7 +274,7 @@ const CreateProductPage = () => {
             className="text-white hover:bg-accent bg-accent"
             variant="filled"
             size="medium"
-            loading={false}
+            loading={creatingProduct}
           >
             Create Product
           </Button>

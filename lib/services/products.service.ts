@@ -2,6 +2,7 @@ import {
   ApiResponse,
   Collections,
   CreateCollection,
+  CreateProduct,
   InventoryOverview,
   Product,
 } from '../@types';
@@ -123,6 +124,40 @@ export const modifyProductQuantity = async ({
 export const createCollections = async (body: CreateCollection) => {
   try {
     await authApi.post(`/product/collection`, body);
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+  }
+};
+
+export const createProduct = async (body: CreateProduct) => {
+  const formData = new FormData();
+
+  formData.append('name', body.name);
+  formData.append('description', body.description);
+  formData.append('thumbnailImageIndex', body.thumbnailImageIndex as any);
+  formData.append('price', body.price as any);
+  formData.append('costPrice', body.costPrice as any);
+  formData.append('quantityAvailable', body.quantityAvailable as any);
+  formData.append('lowStockLevelAlert', body.lowStockLevelAlert as any);
+
+  for (const col of body.collections) {
+    formData.append('collections', col._id);
+  }
+
+  for (const image of body.images) {
+    formData.append('images', image);
+  }
+
+  if (body.unit) {
+    formData.append('unit', body.unit);
+  }
+
+  if (body.unit_value) {
+    formData.append('unit_value', body.unit_value as any);
+  }
+
+  try {
+    await authApi.post(`/product`, formData);
   } catch (error: any) {
     throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
