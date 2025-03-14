@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils/cn";
 import { ExpenseStatus } from "@/lib/utils/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatDistanceToNow } from "date-fns";
+import { FaRegUser } from "react-icons/fa";
 
 const columns: ColumnDef<Expense>[] = [
   {
@@ -32,11 +33,19 @@ const columns: ColumnDef<Expense>[] = [
       const { payee } = row.original;
 
       return (
-        <div className="text-sm">
-          <p className="font-medium">
-            {payee.firstName} {payee.lastName}
-          </p>
-          <p className="text-gray-500">{payee.phoneNumber}</p>
+        <div className="flex gap-2">
+          <div className="size-8 rounded-full bg-gray-200 flex items-center justify-center">
+            <FaRegUser />
+          </div>
+          <div className="text-sm">
+            <p className="font-medium">
+              {payee.firstName} {payee.lastName}
+            </p>
+            <div className="text-sm text-gray-500">
+              <p className="">{payee.phoneNumber}</p>
+              {/* <p className="truncate max-w-sm">{payee.email}</p> */}
+            </div>
+          </div>
         </div>
       );
     },

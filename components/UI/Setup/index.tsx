@@ -41,7 +41,9 @@ const Setup = () => {
     storeEmail,
     storeAddress,
     storeBankDetails,
-    storeLogo,
+    accountNumber,
+    bankName,
+    bankCode,
   ] = [
     watch("storeName"),
     watch("storeSlogan"),
@@ -51,7 +53,9 @@ const Setup = () => {
     watch("storeEmail"),
     watch("storeAddress"),
     watch("storeBankDetails"),
-    watch("storeLogo"),
+    watch("storeBankDetails.account_number"),
+    watch("storeBankDetails.bank_name"),
+    watch("storeBankDetails.bank_code"),
   ];
 
   const [step, setStep] = useState(1);
@@ -72,18 +76,45 @@ const Setup = () => {
   const { data: banks } = useQuery({
     queryFn: getBanks,
     queryKey: ["banks"],
+    staleTime: 3600,
   });
 
-  const { data: lookup } = useQuery({
-    queryFn: lookupAccount,
-    queryKey: ["lookupAccount"],
+  const {
+    data: lookup,
+    refetch,
+    isPending: lookingUp,
+  } = useQuery({
+    queryFn: () => lookupAccount({ accountNumber, bankCode }),
+    queryKey: ["lookupAccount", accountNumber, bankCode],
+    staleTime: 3600,
   });
+
+  useEffect(() => {
+    setValue("storeBankDetails.account_number", "");
+    setValue("storeBankDetails.account_name", "");
+  }, [bankName]);
+
+  useEffect(() => {
+    if (!banks) return;
+
+    const bank = banks.find((b) => b.bank_name === bankName);
+    if (!bank) return;
+
+    if (accountNumber.length !== 10) return;
+    setValue("storeBankDetails.bank_code", bank.bank_code);
+
+    refetch();
+  }, [storeBankDetails, accountNumber, bankName, banks]);
+
+  useEffect(() => {
+    refetch();
+  }, [bankCode]);
 
   useEffect(() => {
     if (!lookup) return;
     setValue("storeBankDetails.account_name", lookup.account_name);
     setValue("storeBankDetails.account_number", lookup.account_number);
-    setValue("storeBankDetails.bank_code", lookup.bank_code);
+    // setValue("storeBankDetails.bank_code", lookup.bank_code);
     setValue("storeBankDetails.bank_name", lookup.bank_name);
   }, [lookup]);
 
@@ -486,7 +517,7 @@ const Setup = () => {
                           ? "border-red-500"
                           : "border-gray-200"
                       }`}
-                      placeholder="Account Name"
+                      placeholder={lookingUp ? "loading..." : `--.--`}
                       {...register("storeBankDetails.account_name", {
                         required: true,
                       })}
