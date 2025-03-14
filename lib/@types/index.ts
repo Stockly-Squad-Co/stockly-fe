@@ -39,6 +39,27 @@ export interface CreateCustomer {
   shipping_address: Address;
 }
 
+export interface CreateCollection {
+  name: string;
+  description: string;
+  image?: File | string;
+  products: string[];
+}
+
+export interface CreateProduct {
+  images: File[];
+  name: string;
+  description: string;
+  collections: Collections[];
+  price: number;
+  costPrice: number;
+  thumbnailImageIndex: number;
+  quantityAvailable: number;
+  lowStockLevelAlert: number;
+  unit: ProductUnits;
+  unit_value: number;
+}
+
 /** db types */
 
 export type Address = {
