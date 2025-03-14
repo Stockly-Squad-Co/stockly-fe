@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { paymentMethods } from "@/lib/data";
 import { queryClient } from "@/lib/providers";
 import { BiMinus, BiPlus } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 
 const CreateOrder = () => {
   const { selectedCustomer, reset: resetStore } = useOrderStore();
@@ -66,6 +67,8 @@ const CreateOrder = () => {
     mutationKey: ["createOrder"],
   });
 
+  const router = useRouter();
+
   const onSubmit = (data: CreateOrderType) =>
     mutate(
       {
@@ -84,6 +87,7 @@ const CreateOrder = () => {
           queryClient.invalidateQueries({
             predicate: (q) => q.queryKey.includes("orders"),
           });
+          router.push("/orders");
         },
         onError: (err) => toast.error(err?.message || "An error occurred"),
       }
