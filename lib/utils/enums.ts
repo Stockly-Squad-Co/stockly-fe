@@ -16,3 +16,26 @@ export enum BusinessSector {
   Toys_Games = "Toys & Games",
   FMCG_Supermarket = "FMCG/Supermarket",
 }
+
+export enum ExpensesType {
+  PERIODIC = "PERIODIC",
+  ONE_OFF = "ONE_OFF",
+  RECORD = "RECORD",
+}
+
+export enum ExpenseFrequency {
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY",
+  BI_WEEKLY = "BI_WEEKLY",
+  MONTHLY = "MOTHLY",
+  BI_MONTHLY = "BI_MONTHLY",
+  QUATERLY = "QUATERLY",
+  YEARLY = "YEARLY",
+}
+
+export enum ExpenseStatus {
+  ACTIVE = "ACTIVE",
+  DELETED = "DELETED",
+  PAID = "PAID",
+  PAYOUT_FAILED = "PAYOUT_FAILED",
+}

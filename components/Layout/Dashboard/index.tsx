@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
       <div className="flex w-full">
         <DashboardSidebar />
         <div className="flex-[5] max-h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <div className="relative min-h-[calc(100vh-3.5rem)] p-2">
+          <div className="relative min-h-[calc(100vh-3.5rem)] p-4">
             {children}
           </div>
         </div>
