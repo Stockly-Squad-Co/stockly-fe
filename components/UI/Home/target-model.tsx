@@ -1,108 +1,140 @@
 "use client";
-import { Suspense, useRef, useState } from "react";
+import * as THREE from "three";
+import { useRef, useState, useMemo, useEffect, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Mask,
-  useMask,
-  Float,
-  Environment,
-  OrbitControls,
-  MeshDistortMaterial,
-  ContactShadows,
-  useGLTF,
-} from "@react-three/drei";
-import { useControls } from "leva";
-import { Group } from "three";
+import { Billboard, OrbitControls, Text } from "@react-three/drei";
+import { randomWords } from "@/lib/data";
 
-interface MaskedContentProps {
-  invert?: boolean;
+function generate(): string {
+  return randomWords[Math.floor(Math.random() * randomWords.length)];
 }
 
-const MaskedContent: React.FC<MaskedContentProps> = ({ invert, ...props }) => {
-  const stencil = useMask(1, invert);
-  const group = useRef<Group>(null);
+type WordProps = {
+  children: React.ReactNode;
+  position: THREE.Vector3;
+};
+
+function Word({ children, position }: WordProps) {
+  const color = new THREE.Color();
+  const fontProps = {
+    font: "/Inter-Bold.woff",
+    fontSize: 2.5,
+    letterSpacing: -0.05,
+    lineHeight: 1,
+    "material-toneMapped": false,
+  };
+  const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state) => {
-    if (group.current) {
-      group.current.rotation.y = state.clock.elapsedTime / 2;
+  const over = (e: THREE.Event) => {
+    // @ts-expect-error another random shit
+    e.stopPropagation();
+    setHovered(true);
+  };
+  const out = () => setHovered(false);
+
+  useEffect(() => {
+    if (hovered) document.body.style.cursor = "pointer";
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, [hovered]);
+
+  useFrame(() => {
+    if (!ref.current) return;
+    // @ts-expect-error some random shit
+    ref.current.material.color.lerp(
+      color.set(hovered ? "#fa2720" : "white"),
+      0.1
+    );
+  });
+
+  return (
+    <Billboard position={position}>
+      <Text
+        ref={ref}
+        onPointerOver={over}
+        onPointerOut={out}
+        onClick={() => console.log(`Clicked on: ${children}`)}
+        {...fontProps}
+      >
+        {children}
+      </Text>
+    </Billboard>
+  );
+}
+
+type CloudProps = {
+  count?: number;
+  radius?: number;
+};
+
+function Cloud({ count = 4, radius = 20 }: CloudProps) {
+  const words = useMemo(() => {
+    const temp: [THREE.Vector3, string][] = [];
+    const spherical = new THREE.Spherical();
+    const phiSpan = Math.PI / (count + 1);
+    const thetaSpan = (Math.PI * 2) / count;
+
+    for (let i = 1; i < count + 1; i++) {
+      for (let j = 0; j < count; j++) {
+        temp.push([
+          new THREE.Vector3().setFromSpherical(
+            spherical.set(radius, phiSpan * i, thetaSpan * j)
+          ),
+          generate(),
+        ]);
+      }
+    }
+
+    return temp;
+  }, [count, radius]);
+
+  return (
+    <>
+      {words.map(([pos, word], index) => (
+        <Word key={index} position={pos}>
+          {word}
+        </Word>
+      ))}
+    </>
+  );
+}
+
+const WordComp = () => {
+  // Ref to the group to control its rotation
+  const groupRef = useRef<THREE.Group>(null);
+
+  // Rotate the group slowly
+  useFrame(() => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += 0.002;
+      // groupRef.current.rotation.x += 0.001;
     }
   });
 
   return (
-    <group {...props}>
-      <mesh position={[-0.75, 0, 0]} scale={1} ref={group}>
-        <torusKnotGeometry args={[0.6, 0.2, 128, 64]} />
-        <meshNormalMaterial {...stencil} />
-      </mesh>
-      <mesh
-        position={[0.75, 0, 0]}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-      >
-        <meshStandardMaterial
-          {...stencil}
-          color={hovered ? "orange" : "white"}
-        />
-      </mesh>
+    // @ts-ignore
+    <group ref={groupRef} rotation={[10, 10.5, 10]}>
+      <Cloud count={8} radius={20} />
+      {/* @ts-ignore */}
     </group>
   );
 };
 
-interface TargetProps {
-  position?: [number, number, number];
-  scale?: number;
-}
-
-const Target: React.FC<TargetProps> = (props) => {
-  const { scene } = useGLTF(
-    "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/target-stand/model.gltf"
-  );
-  return <primitive object={scene} {...props} />;
-};
-
-const TargetModel: React.FC = () => {
-  const { invert, colorWrite, depthWrite } = useControls({
-    invert: false,
-    colorWrite: true,
-    depthWrite: false,
-  });
-
+const Word3D = () => {
   return (
-    <Canvas camera={{ position: [0, 1, 6], fov: 50 }}>
-      <directionalLight intensity={1.5} position={[2, 2, 5]} />
-      <Suspense fallback={null}>
-        <Float floatIntensity={2} rotationIntensity={1} speed={5}>
-          <Mask
-            id={1}
-            colorWrite={colorWrite}
-            depthWrite={depthWrite}
-            position={[-1.1, 0, 0]}
-          >
-            <ringGeometry args={[0.5, 1, 64]} />
-          </Mask>
-        </Float>
-
-        <MaskedContent invert={invert} />
-        <Target position={[0, -1, -2]} scale={1.2} />
-        <ContactShadows
-          frames={1}
-          scale={8}
-          position={[0, -1, 0]}
-          blur={6}
-          opacity={0.45}
-        />
-        <Environment preset="sunset" />
-        <OrbitControls
-          makeDefault
-          enableZoom={false}
-          enablePan={false}
-          minPolarAngle={Math.PI / 3}
-          maxPolarAngle={Math.PI / 2}
-        />
-      </Suspense>
-    </Canvas>
+    <div className="md:size-[40rem] size-[28rem] mx-auto">
+      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 35], fov: 90 }}>
+        {/* @ts-ignore */}
+        <fog attach="fog" args={["#202025", 0, 100]} />
+        <Suspense fallback={null}>
+          <WordComp />
+        </Suspense>
+        <OrbitControls enableZoom={false} enablePan={false} />
+      </Canvas>
+    </div>
   );
 };
 
-export default TargetModel;
+export default Word3D;

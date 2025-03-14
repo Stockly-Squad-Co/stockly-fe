@@ -7,26 +7,18 @@ import { cn } from "@/lib/utils/cn";
 import Image from "next/image";
 import useUserStore from "@/lib/store/user.store";
 import { BiChevronDown } from "react-icons/bi";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { AnimatePresence, motion, Variant } from "framer-motion";
-import { LuCircleUser, LuClipboardCopy, LuStore, LuUser } from "react-icons/lu";
+import { LuCircleUser, LuClipboardCopy, LuStore } from "react-icons/lu";
 import { PiStorefront } from "react-icons/pi";
 import { copyToClipboard } from "@/lib/utils";
 import useDropDown from "@/lib/hooks/useDropdown";
 import { fadeToBottomVariant } from "@/lib/data/variants";
+import useUserInfo from "@/lib/hooks/useUserInfo";
+import { useModal } from "@/lib/providers/ModalProvider";
+import UpgradePlanModal from "./update-plan-modal";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
-
-const expansionVariant: Record<string, Variant> = {
-  closed: {
-    scale: 0,
-    opacity: 0,
-  },
-  opened: {
-    scale: 1,
-    opacity: 1,
-  },
-};
 
 const DashboardNavbar = () => {
   const { user } = useUserStore();
@@ -34,31 +26,45 @@ const DashboardNavbar = () => {
 
   const { dropdownRef, isOpen, toggleDropdown } = useDropDown();
 
+  const { showModal } = useModal();
+
   const store_link = useMemo(() => `${baseUrl}/s/${user?.store?.slug}`, [user]);
 
   return (
     <nav className="flex items-center sticky h-[3.5rem] top-0 border-b z-[100] bg-white justify-between w-screen">
       <div
         className={cn(
-          "border-gray-300 p-3 flex items-center justify-between gap-2 border-r duration-300",
-          sidebarOpen && "flex-1",
-          !sidebarOpen && "w-[55px]"
+          "border-gray-300 p-3 flex flex-1 items-center justify-between gap-2 border-r duration-300"
+          // sidebarOpen && "flex-1",
+          // !sidebarOpen && "w-[55px]"
         )}
       >
-        {sidebarOpen && (
-          <div className="text-primary flex items-center gap-1">
-            <SiNanostores />
-            <span>Stockly</span>
-          </div>
-        )}
+        <div className="text-primary flex items-center gap-1">
+          <SiNanostores />
+          <span>Stockly</span>
+        </div>
+        {/* {sidebarOpen && (
+        )} */}
 
-        <FiSidebar
-          className={cn("cursor-pointer", !sidebarOpen && "flex-1")}
-          onClick={toggleSidebar}
-        />
+        <FiSidebar className={cn("cursor-pointer")} onClick={toggleSidebar} />
       </div>
 
-      <div className="flex-[5] flex items-center justify-end p-4">
+      <div className="flex-[5] flex items-center justify-between p-4">
+        <div>
+          {/* {user && (
+            <p className="capitalize font-medium text-lg">
+              Hello, {user.firstName}
+            </p>
+          )} */}
+
+          <div
+            className="px-4 py-1.5 rounded-full font-medium text-yellow-800 cursor-pointer bg-yellow-50 border border-yellow-500 text-xs select-none"
+            onClick={() => showModal(<UpgradePlanModal />)}
+          >
+            Stockly Lite
+          </div>
+        </div>
+
         <div className="relative" ref={dropdownRef} onClick={toggleDropdown}>
           <div className="flex items-center justify-between gap-2 text-[.9rem] hover:bg-secondary/5 cursor-pointer p-2 rounded-md duration-100 relative">
             <Image

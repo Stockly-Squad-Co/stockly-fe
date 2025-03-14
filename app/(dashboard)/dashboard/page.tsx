@@ -1,5 +1,5 @@
-const Page = async () => {
-  return <></>;
-};
+import Dashboard from "@/components/UI/Dashboard";
+
+const Page = () => <Dashboard />;
 
 export default Page;

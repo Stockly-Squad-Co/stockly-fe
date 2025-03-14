@@ -54,7 +54,7 @@ const DashboardSidebar = () => {
           onClick={() => signOut({ callbackUrl: "/login" })}
         >
           <LuLogOut />
-          Sign Out
+          {sidebarOpen && <span>Sign Out</span>}
         </li>
       </ul>
     </aside>
