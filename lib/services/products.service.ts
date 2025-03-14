@@ -141,7 +141,10 @@ export const createProduct = async (body: CreateProduct) => {
   formData.append('lowStockLevelAlert', body.lowStockLevelAlert as any);
 
   for (const col of body.collections) {
-    formData.append('collections', col._id);
+    formData.append(
+      body.collections?.length > 0 ? 'collections[]' : 'collections',
+      col._id
+    );
   }
 
   for (const image of body.images) {

@@ -296,6 +296,18 @@ export interface Transaction {
   createdAt: string;
 }
 
+export interface TransactionOverview {
+  totalOffline: number;
+  totalOnline: number;
+  totalPayouts: number;
+  totalWithdraws: number;
+}
+
+export interface Wallet {
+  _id: string;
+  balance: number;
+}
+
 export interface Expense {
   _id: string;
   name: string;
