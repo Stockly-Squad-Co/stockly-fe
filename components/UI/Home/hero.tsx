@@ -2,9 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+// import { Suspense } from "react";
 
-const TargetModel = dynamic(() => import("./target-model"), { ssr: false });
+// const TargetModel = dynamic(() => import("./target-model"), { ssr: false });
 
 const Hero = () => {
   return (
@@ -40,11 +40,11 @@ const Hero = () => {
         />
       </div>
 
-      <Suspense>
+      {/* <Suspense>
         <div className="size-[1000px] border border-red-500">
           <TargetModel />
         </div>
-      </Suspense>
+      </Suspense> */}
     </section>
   );
 };
