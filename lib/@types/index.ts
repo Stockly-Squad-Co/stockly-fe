@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import {
   CollectionStatus,
   OrderPaymentStatus,
@@ -6,7 +6,7 @@ import {
   ProductHistorySource,
   ProductStatus,
   ProductUnits,
-} from '../enums';
+} from "../enums";
 
 export interface ApiResponse<T = any, M = any> {
   status: boolean;
@@ -21,13 +21,13 @@ export interface TabsDto {
 }
 
 export type DateRange =
-  | 'today'
-  | 'yesterday'
-  | 'this-week'
-  | 'last-week'
-  | 'this-month'
-  | 'last-month'
-  | 'custom';
+  | "today"
+  | "yesterday"
+  | "this-week"
+  | "last-week"
+  | "this-month"
+  | "last-month"
+  | "custom";
 
 /** dtos */
 export interface CreateCustomer {
@@ -51,8 +51,6 @@ export type Address = {
   zip_code: string;
 };
 
-
-
 export type Customer = {
   _id: string;
   firstName: string;
@@ -62,7 +60,7 @@ export type Customer = {
   additional_information: string;
   profilePicture: string;
   customer_code: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: "ACTIVE" | "INACTIVE";
   shipping_address: Address;
   createdAt: Date;
   purchase_history: PurchaseHistory[];
@@ -139,13 +137,11 @@ export type InventoryOverview = {
   outOfStock: number;
 };
 
-
 export interface ApiResponse<T> {
   status: boolean;
   msg: string;
   data: T;
 }
-
 
 export interface User {
   _id: string;
@@ -172,8 +168,6 @@ export interface Store {
   store_business_id: number;
 }
 
-
-
 export interface BankDetails {
   bank_name: string;
   account_number: string;
@@ -187,8 +181,6 @@ export interface Collection {
   description: string;
   image: string;
 }
-
-
 
 export interface Order {
   cart: { product: string; quantity: number }[];
@@ -206,4 +198,25 @@ export interface Order {
     zip_code: string;
     street_address: string;
   };
+}
+
+export interface Transaction {
+  _id: string;
+  transaction_reference: string;
+  transaction_type: string;
+  purpose: string;
+  customer: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+  amount: number;
+  status: "SUCCESSFUL" | "PENDING" | "FAILED";
+  direction: "INFLOW" | "OUTFLOW";
+  order: {
+    _id: string;
+    salesChannel: string;
+    sku: string;
+  };
+  createdAt: string;
 }

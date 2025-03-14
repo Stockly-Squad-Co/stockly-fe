@@ -27,10 +27,18 @@ const Login = () => {
   const submit: SubmitHandler<LoginType> = async (data) => {
     try {
       setLoading(true);
-      await signIn("credentials", { ...data, callbackUrl: "/dashboard" });
+      const res = await signIn("credentials", {
+        ...data,
+        callbackUrl: "/dashboard",
+        redirect: false,
+      });
 
-      toast.success("Login successful!");
-      router.replace("/dashboard");
+      if (res?.ok) {
+        toast.success("Login successful!");
+        window.location.href = "/dashboard";
+      } else {
+        toast.error("Login failed");
+      }
     } finally {
       setLoading(false);
     }

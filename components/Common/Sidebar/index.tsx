@@ -11,9 +11,8 @@ const variant = {
     width: isMobile ? "90%" : "30%",
     transition: {
       ease: "easeInOut",
-      type: "spring",
-      damping: 15,
-      duration: 0.5,
+      damping: 5,
+      duration: 0.2,
     },
   },
   exit: { width: 0 },
@@ -62,7 +61,7 @@ const SidebarComp: FC<SidebarCompProps> = ({
           {/* background */}
           <motion.div
             {...opacityVariant}
-            className="fixed top-0 right-0 min-w-full min-h-full bg-black/20 backdrop-blur-md"
+            className="fixed top-0 right-0 min-w-full min-h-full bg-black/10 backdrop-blur"
             onClick={isAutomatic ? onClose : () => {}}
           ></motion.div>
 

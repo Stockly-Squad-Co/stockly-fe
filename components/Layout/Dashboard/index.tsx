@@ -1,9 +1,9 @@
-'use client';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { PropsWithChildren } from 'react';
-import DashboardSidebar from './sidebar';
-import DashboardNavbar from './navbar';
+"use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { PropsWithChildren } from "react";
+import DashboardSidebar from "./sidebar";
+import DashboardNavbar from "./navbar";
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
   const { data: session } = useSession();
@@ -12,8 +12,8 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
 
   if (session?.nextStep) {
     switch (session.nextStep) {
-      case 'store-profile':
-        router.push('/setup');
+      case "store-profile":
+        router.push("/setup");
         return null;
     }
   }
@@ -24,7 +24,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
       <div className="flex w-full">
         <DashboardSidebar />
         <div className="flex-[5] max-h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <div className="relative min-h-[calc(100vh-3.5rem)]">{children}</div>
+          <div className="relative min-h-[calc(100vh-3.5rem)] p-2">
+            {children}
+          </div>
         </div>
       </div>
     </main>

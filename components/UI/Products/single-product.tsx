@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import BackButton from '@/components/Common/Button/back-button';
-import { useParams } from 'next/navigation';
-import React from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import BackButton from "@/components/Common/Button/back-button";
+import { useParams } from "next/navigation";
+import React from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getProduct,
   updateProductStatus,
-} from '@/lib/services/products.service';
-import Skeleton from '@/components/Layout/Skeleton';
-import ProductStatusChip from '@/components/Common/Status/product-status';
-import { Switch } from '@/components/Common/Shadcn/switch';
-import { ProductStatus } from '@/lib/enums';
-import { toast } from 'sonner';
-import { queryClient } from '@/lib/providers';
-import { formatNaira } from '@/lib/utils';
+} from "@/lib/services/products.service";
+import Skeleton from "@/components/Layout/Skeleton";
+import ProductStatusChip from "@/components/Common/Status/product-status";
+import { Switch } from "@/components/Common/Shadcn/switch";
+import { ProductStatus } from "@/lib/enums";
+import { toast } from "sonner";
+import { queryClient } from "@/lib/providers";
+import { formatNaira } from "@/lib/utils";
 
 const SingleProductPage = () => {
   const { id } = useParams();
 
   const { data: product, isLoading } = useQuery({
-    queryKey: ['products', id],
+    queryKey: ["products", id],
     queryFn: () => getProduct(id as string),
   });
 
@@ -28,16 +28,16 @@ const SingleProductPage = () => {
     mutateAsync: _updateProductStatus,
     isPending: _updatingProductStatus,
   } = useMutation({
-    mutationKey: ['products', 'edit-status', id],
+    mutationKey: ["products", "edit-status", id],
     mutationFn: (status: ProductStatus) =>
       updateProductStatus(id as string, status),
     onSuccess() {
       queryClient.invalidateQueries({
         predicate({ queryKey }) {
-          return queryKey.includes('products') && queryKey.includes(id);
+          return queryKey.includes("products") && queryKey.includes(id);
         },
       });
-      toast.success(`Product visibility udpated successfully`);
+      toast.success(`Product visibility updated successfully`);
     },
   });
 
@@ -54,7 +54,7 @@ const SingleProductPage = () => {
         <div className="flex items-center gap-3">
           <Switch
             checked={product?.status === ProductStatus.PUBLISHED}
-            className={_updatingProductStatus ? '!animate-pulse' : ''}
+            className={_updatingProductStatus ? "!animate-pulse" : ""}
             onCheckedChange={() =>
               _updateProductStatus(
                 product?.status === ProductStatus.PUBLISHED
