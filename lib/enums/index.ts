@@ -65,3 +65,30 @@ export enum DiscountStatus {
   INACTIVE = 'INACTIVE',
   EXPIRED = 'EXPIRED',
 }
+
+export enum SalesChannel {
+  PHYSICAL_SALE = 'Physical Sale',
+  INSTAGRAM = 'Instagram',
+  WHATSAPP = 'Whatsapp',
+  FACEBOOK = 'Facebook',
+  FLUTTERWAVE = 'Flutterwave',
+  SQUAD_CO = 'Squad Co',
+  Jiji = 'Jiji',
+  Jumia = 'Jumia',
+  Konga = 'Konga',
+  Paystack = 'Paystack',
+  Snapchat = 'Snapchat',
+  Twitter = 'Twitter',
+  Ussd = 'USSD',
+  Others = 'Others',
+}
+
+export enum PaymentMethod {
+  QR_LINK = 'QR/Link',
+  ONLINE_STORE = 'Online Store',
+  CASH = 'Cash',
+  POS = 'POS',
+  BANK_TRANSFER = 'Bank Transfer - Terminal',
+  PAYOUT_BANK_TRANSFER = 'Bank Transfer - Payout',
+  USSD = 'USSD',
+}

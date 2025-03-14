@@ -3,9 +3,12 @@ import {
   CollectionStatus,
   OrderPaymentStatus,
   OrderStatus,
+  PaymentMethod,
   ProductHistorySource,
   ProductStatus,
   ProductUnits,
+  SalesChannel,
+  ShippingStatus,
 } from '../enums';
 
 export interface ApiResponse<T = any, M = any> {
@@ -220,3 +223,43 @@ export interface Order {
     street_address: string;
   };
 }
+
+export type Cart = {
+  product: Product;
+  quantity: number;
+  product_price: number;
+};
+
+export type OrderOverview = {
+  totalOrders: number;
+  unpaidOrders: number;
+  completedOrders: number;
+  amountOwed: number;
+};
+
+export type StoreOrder = {
+  _id: string;
+  orderStatus: OrderStatus;
+  paymentStatus: OrderPaymentStatus;
+  shippingStatus: ShippingStatus;
+  salesChannel: SalesChannel;
+  orderDate: Date;
+  totalAmount: number;
+  sku: string;
+  metaCustomer?: Customer;
+  customer?: Customer;
+  createdAt: Date;
+  shippingFee: number;
+  discountAmount: number;
+  subtotal: number;
+  paymentMethod: PaymentMethod;
+  type: 'PICKUP' | 'DELIVERY';
+  cart: Cart[];
+  shipping_address: Address;
+  transaction?: {
+    _id: string;
+    transaction_type: PaymentMethod;
+    amount: number;
+    createdAt: Date;
+  };
+};

@@ -1,7 +1,6 @@
+import OrdersPage from '@/components/UI/Orders';
 import React from 'react';
 
-const page = () => {
-  return <div>page</div>;
-};
+const page = () => <OrdersPage />;
 
 export default page;
