@@ -8,6 +8,6 @@ export const getUserInfo = async () => {
     } = await authApi.get<ApiResponse<User>>(`/user`);
     return data;
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };

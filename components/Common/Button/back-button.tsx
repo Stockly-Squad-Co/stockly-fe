@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { BiArrowBack } from 'react-icons/bi';
 
-const BackButton = () => {
+const BackButton = ({ onBack }: { onBack?(): void }) => {
   const router = useRouter();
 
   return (
@@ -12,7 +12,8 @@ const BackButton = () => {
         size={25}
         cursor={'pointer'}
         onClick={() => {
-          router.back();
+          if (!onBack) router.back();
+          else onBack();
         }}
       />
     </span>

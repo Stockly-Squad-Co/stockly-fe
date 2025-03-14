@@ -1,6 +1,7 @@
 import {
   ApiResponse,
   Collections,
+  CreateCollection,
   InventoryOverview,
   Product,
 } from '../@types';
@@ -93,6 +94,35 @@ export const updateProductStatus = async (
 
   try {
     await authApi.put(`/product/${id}`, formData);
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+  }
+};
+
+export const modifyProductQuantity = async ({
+  id,
+  qty,
+  type,
+}: {
+  id: string;
+  qty: number;
+  type: 'increase' | 'decrease';
+}) => {
+  try {
+    await authApi.patch(
+      `/product/${id}/${type === 'increase' ? 'increase-qty' : 'decrease-qty'}`,
+      {
+        quantity: qty,
+      }
+    );
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
+  }
+};
+
+export const createCollections = async (body: CreateCollection) => {
+  try {
+    await authApi.post(`/product/collection`, body);
   } catch (error: any) {
     throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }

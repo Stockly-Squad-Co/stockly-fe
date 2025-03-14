@@ -11,7 +11,7 @@ export const login = async (body: { email: string; password: string }) => {
 
     return data.data;
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -26,7 +26,7 @@ export const getRefreshToken = async (refreshToken: string) => {
 
     return data.data;
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -34,7 +34,7 @@ export const signUp = async (body: RegisterType) => {
   try {
     await publicApi.post('/auth/sign-up/store', body);
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -51,7 +51,7 @@ export const setupPassword = async (body: {
       }
     );
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -64,7 +64,7 @@ export const verifyEmail = async (body: { email: string; token: string }) => {
 
     return data.data;
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -72,7 +72,7 @@ export const resendOtp = async (email: string) => {
   try {
     await publicApi.post('/auth/verify-email/resend-otp', email);
   } catch (err: any) {
-    throw new Error(err?.response.data.msg || 'Something went wrong');
+    throw new Error(err?.response?.data?.msg || 'Something went wrong');
   }
 };
 

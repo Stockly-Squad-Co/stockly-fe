@@ -40,7 +40,7 @@ export default function TextField({
         >
           {label}{' '}
           {InputProps?.required && (
-            <span className="text-red-600 mb-[.1rem] ml-1 text-[1.2rem]">
+            <span className="text-red-600 pb-[.1rem] ml-1 text-[1.2rem]">
               *
             </span>
           )}
