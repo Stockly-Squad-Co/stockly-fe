@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import {
   CollectionStatus,
   OrderPaymentStatus,
@@ -9,9 +9,9 @@ import {
   ProductUnits,
   SalesChannel,
   ShippingStatus,
-} from '../enums';
+} from "../enums";
 
-import { ExpenseFrequency, ExpenseStatus, ExpensesType } from '../utils/enums';
+import { ExpenseFrequency, ExpenseStatus, ExpensesType } from "../utils/enums";
 
 export interface ApiResponse<T = any, M = any> {
   status: boolean;
@@ -26,13 +26,13 @@ export interface TabsDto {
 }
 
 export type DateRange =
-  | 'today'
-  | 'yesterday'
-  | 'this-week'
-  | 'last-week'
-  | 'this-month'
-  | 'last-month'
-  | 'custom';
+  | "today"
+  | "yesterday"
+  | "this-week"
+  | "last-week"
+  | "this-month"
+  | "last-month"
+  | "custom";
 
 /** dtos */
 export interface CreateCustomer {
@@ -86,14 +86,14 @@ export type Customer = {
   additional_information: string;
   profilePicture: string;
   customer_code: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: "ACTIVE" | "INACTIVE";
   shipping_address: Address;
-  createdAt: Date;
+  createdAt: string;
   purchase_history: PurchaseHistory[];
   totalAmountSpent: number;
   totalOrders: number;
   totalOrdersValue: number;
-  lastOrderDate: Date;
+  lastOrderDate: string;
 };
 
 export type PurchaseHistory = {
@@ -217,7 +217,7 @@ export interface Order {
     email: string;
   };
   orderDate: string;
-  type: 'PICKUP' | 'DELIVERY';
+  type: "PICKUP" | "DELIVERY";
   address: {
     state: string;
     city: string;
@@ -255,7 +255,7 @@ export type StoreOrder = {
   discountAmount: number;
   subtotal: number;
   paymentMethod: PaymentMethod;
-  type: 'PICKUP' | 'DELIVERY';
+  type: "PICKUP" | "DELIVERY";
   cart: Cart[];
   shipping_address: Address;
   transaction?: {
@@ -276,8 +276,8 @@ export interface Transaction {
     lastName: string;
   };
   amount: number;
-  status: 'SUCCESSFUL' | 'PENDING' | 'FAILED';
-  direction: 'INFLOW' | 'OUTFLOW';
+  status: "SUCCESSFUL" | "PENDING" | "FAILED";
+  direction: "INFLOW" | "OUTFLOW";
   order: {
     _id: string;
     salesChannel: string;
@@ -331,4 +331,22 @@ export interface ExpenseFormValues {
   startDate: string;
   amount: number;
   payee: Payee;
+}
+
+export type OrderType = "PUBLISHED" | "UNPUBLISHED" | "DELETED";
+
+export type OrderStock = "lowStock" | "outOfStock" | "inStock";
+
+export type OrderPickupType = "PICKUP" | "DELIVERY";
+
+export interface CreateOrder {
+  cart: { product: string; quantity: number }[];
+  customer: string;
+  salesChannel: SalesChannel;
+  orderDate: string;
+  paymentMethod: PaymentMethod;
+  paymentStatus: string;
+  transaction?: string;
+  type: OrderPickupType;
+  shipping_rule: string;
 }

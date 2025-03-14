@@ -316,3 +316,13 @@ export const reviews = [
 ];
 
 export const businessSectors = Object.values(BusinessSector);
+
+export const paymentMethods = [
+  "QR/Link",
+  "Online Store",
+  "Cash",
+  "POS",
+  "Bank Transfer - Terminal",
+  "Bank Transfer - Payout",
+  "USSD",
+];

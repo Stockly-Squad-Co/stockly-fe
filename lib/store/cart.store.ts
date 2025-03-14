@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { Product } from "../@types";
 import { toast } from "sonner";
 
-type CartProduct = Product & { quantity?: number };
+export type CartProduct = Product & { quantity?: number };
 
 interface CartStore {
   items: CartProduct[];
@@ -15,6 +15,7 @@ interface CartStore {
   checkExists: (productId: string) => boolean;
   toggleProduct: (product: CartProduct) => void;
   getCartItem: (productId: string) => CartProduct | undefined;
+
   increaseQuantity: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
