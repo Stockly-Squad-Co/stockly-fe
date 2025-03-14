@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import {
   CollectionStatus,
+  DiscountStatus,
   OrderPaymentStatus,
   OrderStatus,
   PaymentMethod,
@@ -63,6 +64,15 @@ export interface CreateProduct {
   lowStockLevelAlert: number;
   unit: ProductUnits;
   unit_value: number;
+}
+
+export interface CreateDiscount {
+  name: string;
+  type: 'FIXED' | 'PERCENTAGE';
+  value: number;
+  startDate: Date;
+  endDate: Date;
+  products: Product[];
 }
 
 /** db types */
@@ -332,3 +342,16 @@ export interface ExpenseFormValues {
   amount: number;
   payee: Payee;
 }
+
+export type Discount = {
+  _id: string;
+  name: string;
+  type: 'PERCENTAGE' | 'FIXED';
+  value: number;
+  status: DiscountStatus;
+  totalProducts: number;
+  products: Product[];
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+};
