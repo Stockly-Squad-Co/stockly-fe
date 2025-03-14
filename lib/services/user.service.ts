@@ -1,5 +1,5 @@
-import { authApi } from "../configs/axios-instance";
-import { ApiResponse, User } from "../@types";
+import { authApi } from '../configs/axios-instance';
+import { ApiResponse, User } from '../@types';
 
 export const getUserInfo = async () => {
   try {

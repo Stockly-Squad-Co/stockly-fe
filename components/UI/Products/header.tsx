@@ -23,7 +23,11 @@ const ProductsHeader: FC<Props> = ({ currentTab }) => {
     <>
       <header className="flex items-center gap-4 justify-between">
         <h1 className="text-[1.7rem] font-bold">Products</h1>
-        <Link href="/products/new">
+        <Link
+          href={
+            currentTab === 0 ? '/products/new' : '/products/collections/new'
+          }
+        >
           <Button
             variant="filled"
             size="medium"

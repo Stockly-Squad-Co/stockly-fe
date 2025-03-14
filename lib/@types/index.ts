@@ -39,6 +39,27 @@ export interface CreateCustomer {
   shipping_address: Address;
 }
 
+export interface CreateCollection {
+  name: string;
+  description: string;
+  image?: File | string;
+  products: string[];
+}
+
+export interface CreateProduct {
+  images: File[];
+  name: string;
+  description: string;
+  collections: Collections[];
+  price: number;
+  costPrice: number;
+  thumbnailImageIndex: number;
+  quantityAvailable: number;
+  lowStockLevelAlert: number;
+  unit: ProductUnits;
+  unit_value: number;
+}
+
 /** db types */
 
 export type Address = {
@@ -50,8 +71,6 @@ export type Address = {
   street_address: string;
   zip_code: string;
 };
-
-
 
 export type Customer = {
   _id: string;
@@ -139,13 +158,11 @@ export type InventoryOverview = {
   outOfStock: number;
 };
 
-
 export interface ApiResponse<T> {
   status: boolean;
   msg: string;
   data: T;
 }
-
 
 export interface User {
   _id: string;
@@ -172,8 +189,6 @@ export interface Store {
   store_business_id: number;
 }
 
-
-
 export interface BankDetails {
   bank_name: string;
   account_number: string;
@@ -188,8 +203,6 @@ export interface Collection {
   image: string;
 }
 
-
-
 export interface Order {
   cart: { product: string; quantity: number }[];
   customer: {
@@ -199,7 +212,7 @@ export interface Order {
     email: string;
   };
   orderDate: string;
-  type: "PICKUP" | "DELIVERY";
+  type: 'PICKUP' | 'DELIVERY';
   address: {
     state: string;
     city: string;
