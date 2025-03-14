@@ -148,7 +148,10 @@ export const createProduct = async (body: CreateProduct) => {
   }
 
   for (const image of body.images) {
-    formData.append('images', image);
+    formData.append(
+      body.collections?.length > 0 ? 'images[]' : 'images',
+      image
+    );
   }
 
   if (body.unit) {
