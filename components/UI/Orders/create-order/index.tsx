@@ -21,6 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createOrder } from "@/lib/services/order.service";
 import { toast } from "sonner";
 import { paymentMethods } from "@/lib/data";
+import { queryClient } from "@/lib/providers";
 
 const CreateOrder = () => {
   const { selectedCustomer, reset: resetStore } = useOrderStore();
@@ -73,6 +74,9 @@ const CreateOrder = () => {
           reset();
           resetStore();
           toast.success("Order created successfully");
+          queryClient.invalidateQueries({
+            predicate: (q) => q.queryKey.includes("orders"),
+          });
         },
         onError: (err) => toast.error(err?.message || "An error occurred"),
       }
@@ -84,79 +88,86 @@ const CreateOrder = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormSection title="Order Details">
             <div className="space-y-4">
-              {selectedCustomer ? (
-                <div className="space-y-1">
-                  <p>Selected Customer</p>
+              <div className="space-y-4">
+                {selectedCustomer ? (
+                  <div className="space-y-1">
+                    <p>Selected Customer</p>
 
-                  <div className="flex items-center border gap-4 rounded-md border-gray-200 p-2 justify-between">
-                    <div className="flex-grow">
-                      <div>
-                        <p className="text-sm font-medium">
-                          {selectedCustomer.firstName}{" "}
-                          {selectedCustomer.lastName}
-                        </p>
-                        <div className="text-xs text-gray-500">
-                          <p>{selectedCustomer.email}</p>
-                          <p>{selectedCustomer.phoneNumber}</p>
+                    <div className="flex items-center border gap-4 rounded-md border-gray-200 p-2 justify-between">
+                      <div className="flex-grow">
+                        <div>
+                          <p className="text-sm font-medium">
+                            {selectedCustomer.firstName}{" "}
+                            {selectedCustomer.lastName}
+                          </p>
+                          <div className="text-xs text-gray-500">
+                            <p>{selectedCustomer.email}</p>
+                            <p>{selectedCustomer.phoneNumber}</p>
+                          </div>
                         </div>
                       </div>
+                      <button
+                        className="text-secondary font-medium text-sm"
+                        onClick={() => showSidebar(<SelectedCustomerUI />)}
+                        type="button"
+                      >
+                        Change
+                      </button>
                     </div>
-                    <button
-                      className="text-secondary font-medium text-sm"
-                      onClick={() => showSidebar(<SelectedCustomerUI />)}
-                      type="button"
-                    >
-                      Change
-                    </button>
                   </div>
-                </div>
-              ) : (
-                <SelectCustomers />
-              )}
-            </div>
+                ) : (
+                  <SelectCustomers />
+                )}
+              </div>
 
-            <div className="space-y-2 ">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-2">
-                  <label className="block text-sm">
-                    Sales Channel <span className="text-red-500">*</span>
-                  </label>
-                  <Controller
-                    control={control}
-                    name="salesChannel"
-                    // rules={{ required: "Frequency is required" }}
-                    render={({ field }) => (
-                      <select {...field} className="border p-3 w-full rounded">
-                        {Object.values(SalesChannel).map((channel) => (
-                          <option key={channel} value={channel}>
-                            {channel}
-                          </option>
-                        ))}
-                      </select>
+              <div className="space-y-2 ">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-2">
+                    <label className="block text-sm">
+                      Sales Channel <span className="text-red-500">*</span>
+                    </label>
+                    <Controller
+                      control={control}
+                      name="salesChannel"
+                      // rules={{ required: "Frequency is required" }}
+                      render={({ field }) => (
+                        <select
+                          {...field}
+                          className="border p-3 w-full rounded"
+                        >
+                          {Object.values(SalesChannel).map((channel) => (
+                            <option key={channel} value={channel}>
+                              {channel}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    />
+                    {errors?.salesChannel && (
+                      <p className="text-red-500 text-sm">
+                        {errors.salesChannel.message}
+                      </p>
                     )}
-                  />
-                  {errors?.salesChannel && (
-                    <p className="text-red-500 text-sm">
-                      {errors.salesChannel.message}
-                    </p>
-                  )}
-                </div>
+                  </div>
 
-                <div className={`space-y-2`}>
-                  <label className="block text-sm">
-                    Order Date
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    {...register("orderDate", { required: "Date is required" })}
-                    className="border p-3 w-full rounded-md border-gray-200"
-                  />
-                  {errors.orderDate && (
-                    <p className="text-red-500 text-sm">
-                      {errors.orderDate.message}
-                    </p>
-                  )}
+                  <div className={`space-y-2`}>
+                    <label className="block text-sm">
+                      Order Date
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      {...register("orderDate", {
+                        required: "Date is required",
+                      })}
+                      className="border p-3 w-full rounded-md border-gray-200"
+                    />
+                    {errors.orderDate && (
+                      <p className="text-red-500 text-sm">
+                        {errors.orderDate.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
