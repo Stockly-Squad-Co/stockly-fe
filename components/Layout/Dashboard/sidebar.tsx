@@ -3,32 +3,14 @@
 import { sidebarLinks } from "@/lib/data/dashboard";
 import useAppStore from "@/lib/store/app.store";
 import { cn } from "@/lib/utils/cn";
-import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { LuLogOut } from "react-icons/lu";
-import { signOut as apiSignOut } from "@/lib/services/auth.service";
-import { signOut as nextAuthSignOut } from "next-auth/react";
-import { toast } from "sonner";
+import { signOut } from "next-auth/react";
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
   const { sidebarOpen } = useAppStore();
-
-  const { mutateAsync: logOut, isPending: loggingOut } = useMutation({
-    mutationKey: ["sign-out"],
-    mutationFn: async () => {
-      // await apiSignOut();
-      await nextAuthSignOut();
-    },
-    onSuccess() {
-      toast.success("Signed out successfully");
-      redirect("/login");
-    },
-    onError(error) {
-      toast.error(error?.message);
-    },
-  });
 
   return (
     <aside
@@ -67,9 +49,9 @@ const DashboardSidebar = () => {
         <li
           className={cn(
             "py-3 px-2 text-[.9rem] flex items-center gap-2 hover:text-secondary hover:font-bold cursor-pointer duration-200",
-            loggingOut && "text-secondary font-bold animate-pulse"
+            false && "text-secondary font-bold animate-pulse"
           )}
-          onClick={() => logOut()}
+          onClick={() => signOut({ callbackUrl: "/login" })}
         >
           <LuLogOut />
           Sign Out

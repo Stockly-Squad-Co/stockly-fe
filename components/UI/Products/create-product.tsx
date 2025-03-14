@@ -1,25 +1,39 @@
-'use client';
-import Button from '@/components/Common/Button';
-import FormContainer from '@/components/Common/Form/form-container';
-import FormFooter from '@/components/Common/Form/form-footer';
-import FormSection from '@/components/Common/Form/form-section';
-import ImageUploader from '@/components/Common/Inputs/image-upload';
-import SelectCollections from '@/components/Common/Inputs/select-collections';
-import SelectField from '@/components/Common/Inputs/select-field';
-import TextField from '@/components/Common/Inputs/text-field';
-import { CreateProduct } from '@/lib/@types';
-import { ProductUnits } from '@/lib/enums';
-import { createProduct } from '@/lib/services/products.service';
-import { cn } from '@/lib/utils/cn';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+"use client";
+import Button from "@/components/Common/Button";
+import FormContainer from "@/components/Common/Form/form-container";
+import FormFooter from "@/components/Common/Form/form-footer";
+import FormSection from "@/components/Common/Form/form-section";
+import ImageUploader from "@/components/Common/Inputs/image-upload";
+import SelectCollections from "@/components/Common/Inputs/select-collections";
+import SelectField from "@/components/Common/Inputs/select-field";
+import TextField from "@/components/Common/Inputs/text-field";
+import Modal from "@/components/Common/Modal";
+import { CreateProduct } from "@/lib/@types";
+import { ProductUnits } from "@/lib/enums";
+import { useModal } from "@/lib/providers/ModalProvider";
+import { createProduct } from "@/lib/services/products.service";
+import { cn } from "@/lib/utils/cn";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type Inputs = CreateProduct;
 
-const CreateProductPage = () => {
+interface Props {
+  isModal?: boolean;
+  onModalClose?: () => void;
+  onSuccess?: () => void;
+  modalClass?: string;
+}
+
+const CreateProductPage = ({
+  isModal,
+  onModalClose,
+  onSuccess,
+  modalClass,
+}: Props) => {
   const router = useRouter();
   const {
     handleSubmit,
@@ -36,25 +50,27 @@ const CreateProductPage = () => {
     },
   });
 
+  const { hideModal } = useModal();
+
   const [images, thumbnailImageIndex, collections, unit] = watch([
-    'images',
-    'thumbnailImageIndex',
-    'collections',
-    'unit',
+    "images",
+    "thumbnailImageIndex",
+    "collections",
+    "unit",
   ]);
 
   const { isPending: creatingProduct, mutateAsync } = useMutation({
-    mutationKey: ['products', 'create'],
+    mutationKey: ["products", "create"],
     mutationFn: createProduct,
     onSuccess() {
-      toast.success('Product created successfully');
-      router.push('/products');
+      toast.success("Product created successfully");
+      router.push("/products");
     },
   });
 
   const onSubmit = async (e: Inputs) => {
     if (!e.images?.length) {
-      return toast.error('select at least one image');
+      return toast.error("select at least one image");
     }
 
     if (e.thumbnailImageIndex >= e.images?.length) {
@@ -64,16 +80,16 @@ const CreateProductPage = () => {
     await mutateAsync(e);
   };
 
-  return (
+  const renderForm = () => (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-4 md:p-6">
-        <FormContainer title="Create Product">
+        <FormContainer title="Create Product" showBackButton={!isModal}>
           <FormSection title="Product Images">
             {!images?.length ? (
               <>
                 <ImageUploader
                   uploaded_image={undefined}
-                  onUploadImage={(img) => setValue('images', [...images, img])}
+                  onUploadImage={(img) => setValue("images", [...images, img])}
                 />
               </>
             ) : (
@@ -87,7 +103,7 @@ const CreateProductPage = () => {
                         uploaded_image={img}
                         onRemoveImage={() =>
                           setValue(
-                            'images',
+                            "images",
                             images.filter((_, index) => index != img_index)
                           )
                         }
@@ -95,11 +111,11 @@ const CreateProductPage = () => {
 
                       <div
                         onClick={() =>
-                          setValue('thumbnailImageIndex', img_index)
+                          setValue("thumbnailImageIndex", img_index)
                         }
                         className={cn(
-                          'absolute top-0 left-0 w-full h-full border-4 hover:border-accent cursor-pointer z-[20] rounded-md duration-200 transition-all flex flex-col justify-end',
-                          is_thumbnail && 'border-accent'
+                          "absolute top-0 left-0 w-full h-full border-4 hover:border-accent cursor-pointer z-[20] rounded-md duration-200 transition-all flex flex-col justify-end",
+                          is_thumbnail && "border-accent"
                         )}
                       >
                         {is_thumbnail ? (
@@ -115,7 +131,7 @@ const CreateProductPage = () => {
                 })}
                 <ImageUploader
                   uploaded_image={undefined}
-                  onUploadImage={(img) => setValue('images', [...images, img])}
+                  onUploadImage={(img) => setValue("images", [...images, img])}
                 />
               </div>
             )}
@@ -126,12 +142,12 @@ const CreateProductPage = () => {
               <TextField
                 label="Product Name"
                 InputProps={{
-                  placeholder: 'Enter Name',
+                  placeholder: "Enter Name",
                   required: true,
-                  ...register('name', {
+                  ...register("name", {
                     required: {
                       value: true,
-                      message: 'This field is required',
+                      message: "This field is required",
                     },
                   }),
                 }}
@@ -142,19 +158,19 @@ const CreateProductPage = () => {
                 label="Product Description (Optional)"
                 multiline={true}
                 InputProps={{
-                  placeholder: 'Enter description',
+                  placeholder: "Enter description",
                   required: false,
-                  ...register('description'),
+                  ...register("description"),
                 }}
               />
 
               <SelectCollections
                 onSelectCollection={(c) => {
-                  setValue('collections', [...collections, c]);
+                  setValue("collections", [...collections, c]);
                 }}
                 onRemoveCollection={(c) => {
                   setValue(
-                    'collections',
+                    "collections",
                     collections.filter((col) => col._id != c._id)
                   );
                 }}
@@ -166,16 +182,16 @@ const CreateProductPage = () => {
                   label="Price"
                   InputProps={{
                     required: true,
-                    type: 'number',
-                    placeholder: 'Enter amount',
-                    ...register('price', {
+                    type: "number",
+                    placeholder: "Enter amount",
+                    ...register("price", {
                       required: {
                         value: true,
-                        message: 'This field is required',
+                        message: "This field is required",
                       },
                       min: {
                         value: 0,
-                        message: 'Price must be greater than 0',
+                        message: "Price must be greater than 0",
                       },
                     }),
                   }}
@@ -185,15 +201,15 @@ const CreateProductPage = () => {
                   label="Cost Price"
                   InputProps={{
                     required: true,
-                    type: 'number',
-                    ...register('costPrice', {
+                    type: "number",
+                    ...register("costPrice", {
                       required: {
                         value: true,
-                        message: 'This field is required',
+                        message: "This field is required",
                       },
                       min: {
                         value: 0,
-                        message: 'Price must be greater than 0',
+                        message: "Price must be greater than 0",
                       },
                     }),
                   }}
@@ -209,12 +225,12 @@ const CreateProductPage = () => {
                 label="Stock Quantity"
                 InputProps={{
                   required: true,
-                  placeholder: 'Enter quantity',
-                  type: 'number',
-                  ...register('quantityAvailable', {
+                  placeholder: "Enter quantity",
+                  type: "number",
+                  ...register("quantityAvailable", {
                     required: {
                       value: true,
-                      message: 'This field is required',
+                      message: "This field is required",
                     },
                   }),
                 }}
@@ -225,12 +241,12 @@ const CreateProductPage = () => {
                 label="Low Stock Alert"
                 InputProps={{
                   required: true,
-                  placeholder: 'Enter low stock level alert',
-                  type: 'number',
-                  ...register('lowStockLevelAlert', {
+                  placeholder: "Enter low stock level alert",
+                  type: "number",
+                  ...register("lowStockLevelAlert", {
                     required: {
                       value: true,
-                      message: 'This field is required',
+                      message: "This field is required",
                     },
                   }),
                 }}
@@ -244,18 +260,18 @@ const CreateProductPage = () => {
                 }))}
                 label="Unit (optional)"
                 data={{ label: unit, value: unit }}
-                onValueChange={(e) => setValue('unit', e)}
+                onValueChange={(e) => setValue("unit", e)}
               />
 
               <TextField
                 label="Unit Value"
                 InputProps={{
-                  type: 'number',
+                  type: "number",
                   placeholder: 'E.g "2"pc of singlets',
-                  ...register('unit_value', {
+                  ...register("unit_value", {
                     validate(value, otherValues) {
                       if (value && !otherValues.unit) {
-                        return 'To add a unit value you need to select the unit';
+                        return "To add a unit value you need to select the unit";
                       }
                     },
                   }),
@@ -271,7 +287,7 @@ const CreateProductPage = () => {
         onReset={reset}
         submitButton={
           <Button
-            className="text-white hover:bg-accent bg-accent"
+            className="text-black hover:bg-accent bg-accent"
             variant="filled"
             size="medium"
             loading={creatingProduct}
@@ -281,6 +297,14 @@ const CreateProductPage = () => {
         }
       />
     </form>
+  );
+
+  return isModal ? (
+    <Modal onClose={hideModal} className={modalClass || ""}>
+      {renderForm()}
+    </Modal>
+  ) : (
+    renderForm()
   );
 };
 

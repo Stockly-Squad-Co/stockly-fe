@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import BackButton from '@/components/Common/Button/back-button';
-import Skeleton from '@/components/Layout/Skeleton';
-import { getCustomer } from '@/lib/services/customer.service';
-import { copyToClipboard, formatDate, formatNaira } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import React from 'react';
-import { BiCopy, BiEnvelope, BiPhone } from 'react-icons/bi';
-import PurchaseHistoryTable from '../Tables/purchase-history';
+import BackButton from "@/components/Common/Button/back-button";
+import Skeleton from "@/components/Layout/Skeleton";
+import { getCustomer } from "@/lib/services/customer.service";
+import { copyToClipboard, formatDate, formatNaira } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import React from "react";
+import { BiCopy, BiEnvelope, BiPhone } from "react-icons/bi";
+import PurchaseHistoryTable from "../Tables/purchase-history";
 
 const SingleCustomerPage = () => {
   const { id } = useParams();
   const { isLoading, data: customer } = useQuery({
-    queryKey: ['customers', id!],
+    queryKey: ["customers", id!],
     queryFn: () => getCustomer(id as string),
   });
 
   if (isLoading) return <Skeleton />;
 
   const fullShippingAddress = `${
-    customer?.shipping_address?.street_address ?? ' '
+    customer?.shipping_address?.street_address ?? " "
   }, ${customer?.shipping_address?.city}, ${
     customer?.shipping_address?.state?.name
   }, Nigeria, ${customer?.shipping_address?.zip_code}`;
@@ -35,7 +35,7 @@ const SingleCustomerPage = () => {
 
       <section className="flex items-start gap-4 px-6">
         <div className="space-y-4 flex-[4] w-full">
-          <article className={'rounded-lg shadow-md border bg-white'}>
+          <article className={"rounded-lg shadow-md border bg-white"}>
             <header className="border-b py-4 px-6 flex items-center gap-4">
               <Image
                 width={500}
@@ -50,9 +50,9 @@ const SingleCustomerPage = () => {
                   {customer?.firstName} {customer?.lastName}
                 </h1>
                 <p className="text-[.8rem] mt-1">
-                  Customer since:{' '}
+                  Customer since:{" "}
                   <b className="font-semibold text-secondary">
-                    {formatDate(customer?.createdAt!)}
+                    {formatDate(`${customer?.createdAt}`)}
                   </b>
                 </p>
               </div>
@@ -79,7 +79,7 @@ const SingleCustomerPage = () => {
                 <h2 className="text-[1.1rem] font-bold mt-1">
                   {customer?.lastOrderDate
                     ? formatDate(customer?.lastOrderDate!)
-                    : 'No orders yet'}
+                    : "No orders yet"}
                 </h2>
               </article>
 
@@ -115,7 +115,7 @@ const SingleCustomerPage = () => {
             </div>
           </article>
 
-          <article className={'rounded-md shadow-md border'}>
+          <article className={"rounded-md shadow-md border"}>
             <header className="border-b py-4 px-6 flex items-center gap-4">
               <h1 className="text-[1.1rem] font-bold text-gray-600">
                 Purchase History
@@ -132,7 +132,7 @@ const SingleCustomerPage = () => {
         </div>
 
         <div className="space-y-4 flex-[2]">
-          <article className={'rounded-lg shadow-md border bg-white'}>
+          <article className={"rounded-lg shadow-md border bg-white"}>
             <header className="border-b py-4 px-6 flex items-center gap-4">
               <h1 className="text-[1.1rem] font-bold text-gray-600">
                 Contact Details
@@ -170,7 +170,7 @@ const SingleCustomerPage = () => {
             </div>
           </article>
 
-          <article className={'rounded-lg shadow-md border bg-white'}>
+          <article className={"rounded-lg shadow-md border bg-white"}>
             <header className="border-b py-4 px-6 flex items-center gap-4">
               <h1 className="text-[1.1rem] font-bold text-gray-600">Address</h1>
             </header>
@@ -180,7 +180,7 @@ const SingleCustomerPage = () => {
                 <p className="text-[.9rem] font-semibold text-gray-500 flex items-center gap-2">
                   Shippping Address
                   <BiCopy
-                    cursor={'pointer'}
+                    cursor={"pointer"}
                     onClick={() => copyToClipboard(fullShippingAddress)}
                   />
                 </p>
