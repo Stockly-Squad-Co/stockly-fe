@@ -1,10 +1,10 @@
-"use client";
-import SmallContentBox from "@/components/Common/Box/small";
-import Button from "@/components/Common/Button";
-import { fetchDashboardData } from "@/lib/services/analytics.service";
-import useUserStore from "@/lib/store/user.store";
-import { useQuery } from "@tanstack/react-query";
-import { CiMoneyBill } from "react-icons/ci";
+'use client';
+import SmallContentBox from '@/components/Common/Box/small';
+import Button from '@/components/Common/Button';
+import { fetchDashboardData } from '@/lib/services/analytics.service';
+import useUserStore from '@/lib/store/user.store';
+import { useQuery } from '@tanstack/react-query';
+import { CiMoneyBill } from 'react-icons/ci';
 import {
   BarChart,
   Bar,
@@ -16,23 +16,23 @@ import {
   Pie,
   Cell,
   TooltipProps,
-} from "recharts";
-import { RiSignalWifiOffLine } from "react-icons/ri";
-import { useRouter } from "next/navigation";
-import RecentOrdersTable from "../Tables/orders/recent-orders";
-import { TbCurrencyNaira, TbWorldWww } from "react-icons/tb";
-import { formatNaira } from "@/lib/utils";
-import { GiArcheryTarget, GiTakeMyMoney } from "react-icons/gi";
-import { BiDonateHeart } from "react-icons/bi";
-import { PiUsersFour } from "react-icons/pi";
-import { quickActions } from "@/lib/data";
-import Link from "next/link";
+} from 'recharts';
+import { RiSignalWifiOffLine } from 'react-icons/ri';
+import { useRouter } from 'next/navigation';
+import RecentOrdersTable from '../Tables/orders/recent-orders';
+import { TbCurrencyNaira, TbWorldWww } from 'react-icons/tb';
+import { formatNaira } from '@/lib/utils';
+import { GiArcheryTarget, GiTakeMyMoney } from 'react-icons/gi';
+import { BiDonateHeart } from 'react-icons/bi';
+import { PiUsersFour } from 'react-icons/pi';
+import { quickActions } from '@/lib/data';
+import Link from 'next/link';
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const Dashboard = () => {
   const { data, isPending: isLoading } = useQuery({
-    queryKey: ["dashboard"],
+    queryKey: ['dashboard'],
     queryFn: fetchDashboardData,
   });
 
@@ -73,10 +73,10 @@ const Dashboard = () => {
 
   const revenueData = data.revenueOverview.length
     ? data.revenueOverview
-    : [{ date: "No Data", total: 0 }];
+    : [{ date: 'No Data', total: 0 }];
   const topChannels = data.topChannels.length
     ? data.topChannels
-    : [{ _id: "No Data", total: 0 }];
+    : [{ _id: 'No Data', total: 0 }];
 
   return (
     <main>
@@ -100,12 +100,12 @@ const Dashboard = () => {
       <section className="space-y-3">
         {user && (
           <h2 className="text-2xl font-bold capitalize">
-            Hello {user.firstName}{" "}
+            Hello {user.firstName}{' '}
           </h2>
         )}
 
-        <div className="flex gap-3">
-          <div className="flex-[5] space-y-4">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="col-span-2 space-y-4">
             <div className="border rounded-md p-4 space-y-4 shadow shadow-gray-200">
               <div className="flex gap-4 justify-between">
                 <div>
@@ -116,11 +116,11 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 <SmallContentBox
                   boxBg="#e0f2fe"
                   iconColor="#0369a1"
-                  icon={"₦"}
+                  icon={'₦'}
                   value={data.orders_count}
                   boxKey="Orders"
                 />
@@ -227,7 +227,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex-[2] space-y-3">
+          <div className="w-full space-y-3">
             <div className="border rounded-md p-5 shadow shadow-gray-200">
               <p className="text-xl font-medium text-gray-600">
                 Top Sales Channels
@@ -242,7 +242,7 @@ const Dashboard = () => {
 
                     <Button
                       className="text-xs px-3 py-1.5 mx-auto"
-                      onClick={() => router.push("/orders/new")}
+                      onClick={() => router.push('/orders/new')}
                     >
                       Create order
                     </Button>
