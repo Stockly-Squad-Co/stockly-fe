@@ -2,9 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-// import { Suspense } from "react";
+import { Suspense } from "react";
 
-// const TargetModel = dynamic(() => import("./target-model"), { ssr: false });
+const TargetModel = dynamic(() => import("./target-model"), { ssr: false });
 
 const Hero = () => {
   return (
@@ -31,13 +31,14 @@ const Hero = () => {
       </div>
 
       <div className="flex items-center justify-center">
-        <Image
+        {/* <Image
           src={"/svgs/product_look.svg"}
           alt="hero"
           width={300}
           height={300}
           className="md:size-[500px] 2xl:size-[600px] ml-auto"
-        />
+        /> */}
+        <TargetModel />
       </div>
 
       {/* <Suspense>

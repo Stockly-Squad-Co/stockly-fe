@@ -44,7 +44,7 @@ function Word({ children, position }: WordProps) {
     if (!ref.current) return;
     // @ts-expect-error some random shit
     ref.current.material.color.lerp(
-      color.set(hovered ? "#fa2720" : "white"),
+      color.set(hovered ? "#fa2720" : "#6f6f6f"),
       0.1
     );
   });
