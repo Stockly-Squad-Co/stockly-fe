@@ -8,7 +8,7 @@ import { ColumnDef } from '@tanstack/react-table';
 export const columns: ColumnDef<RecentOrder>[] = [
   {
     header: 'Order ID',
-    accessorKey: '_id',
+    accessorKey: 'sku',
   },
   {
     header: 'Amount',
