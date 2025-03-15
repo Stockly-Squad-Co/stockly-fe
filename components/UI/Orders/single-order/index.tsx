@@ -59,7 +59,7 @@ const SingleOrderPage = () => {
       mutationFn: () => generateOrderPaymentLink(order?._id!),
       onSuccess(data) {
         toast.success('Payment link generated successfully');
-        showSidebar(<PaymentLinkSidebar data={data} />);
+        showSidebar(<PaymentLinkSidebar data={data} order_id={order?._id!} />);
       },
       onError(error) {
         toast.error(error.message);

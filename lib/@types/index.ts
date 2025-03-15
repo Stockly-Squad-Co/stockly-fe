@@ -375,7 +375,7 @@ export type GeneratePaymentLink = {
     account_name: string;
     account_number: string;
     transaction_reference: string;
-    expected_number: number;
+    expected_amount: number;
     bank: 'GTBank';
     expires_at: Date;
   };

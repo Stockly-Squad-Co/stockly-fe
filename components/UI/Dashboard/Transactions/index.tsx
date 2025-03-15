@@ -63,7 +63,7 @@ const Transactions = () => {
           boxBg="#e0f2fe"
           iconColor="#0369a1"
           icon={<BiMoney />}
-          value={overview?.totalOffline}
+          value={overview?.totalOffline?.toLocaleString()}
           boxKey="Total Offlines"
         />
 
@@ -71,7 +71,7 @@ const Transactions = () => {
           boxBg="#f0fdf4"
           iconColor="#16a34a"
           icon={<BiMoney />}
-          value={overview?.totalOnline}
+          value={overview?.totalOnline?.toLocaleString()}
           boxKey="Total Online"
         />
 
@@ -79,7 +79,7 @@ const Transactions = () => {
           boxBg="#fef2f2"
           iconColor="#b91c1c"
           icon={<BiMoney />}
-          value={overview?.totalOffline}
+          value={overview?.totalOffline?.toLocaleString()}
           boxKey="Total Offline transactions"
         />
 
@@ -87,7 +87,7 @@ const Transactions = () => {
           boxBg="#fefce8"
           iconColor="#ca8a04"
           icon={<BiMoney />}
-          value={overview?.totalPayouts}
+          value={overview?.totalPayouts?.toLocaleString()}
           boxKey="Total Payouts"
         />
       </div>
