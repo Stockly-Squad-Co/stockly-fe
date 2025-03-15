@@ -1,8 +1,10 @@
 "use client";
+import SmallContentBox from "@/components/Common/Box/small";
 import Button from "@/components/Common/Button";
 import { fetchDashboardData } from "@/lib/services/analytics.service";
 import useUserStore from "@/lib/store/user.store";
 import { useQuery } from "@tanstack/react-query";
+import { CiMoneyBill } from "react-icons/ci";
 import {
   BarChart,
   Bar,
@@ -13,17 +15,30 @@ import {
   PieChart,
   Pie,
   Cell,
+  TooltipProps,
 } from "recharts";
+import { RiSignalWifiOffLine } from "react-icons/ri";
+import { useRouter } from "next/navigation";
+import RecentOrdersTable from "../Tables/orders/recent-orders";
+import { TbCurrencyNaira, TbWorldWww } from "react-icons/tb";
+import { formatNaira } from "@/lib/utils";
+import { GiArcheryTarget, GiTakeMyMoney } from "react-icons/gi";
+import { BiDonateHeart } from "react-icons/bi";
+import { PiUsersFour } from "react-icons/pi";
+import { quickActions } from "@/lib/data";
+import Link from "next/link";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const Dashboard = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isPending: isLoading } = useQuery({
     queryKey: ["dashboard"],
     queryFn: fetchDashboardData,
   });
 
   const { user } = useUserStore();
+
+  const router = useRouter();
 
   if (isLoading)
     return (
@@ -53,6 +68,7 @@ const Dashboard = () => {
         </div>
       </div>
     );
+
   if (!data) return <div>No data available</div>;
 
   const revenueData = data.revenueOverview.length
@@ -64,7 +80,7 @@ const Dashboard = () => {
 
   return (
     <main>
-      <section>
+      {/* <section>
         <div className="w-full border rounded-md p-5 shadow shadow-gray-200">
           <div className="space-y-5">
             <div>
@@ -79,28 +95,217 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className="py-10 space-y-3">
+      <section className="space-y-3">
         {user && (
-          <h2 className="text-2xl font-medium capitalize">
+          <h2 className="text-2xl font-bold capitalize">
             Hello {user.firstName}{" "}
           </h2>
         )}
 
         <div className="flex gap-3">
-          <div className="flex-[2] border rounded-md p-5 shadow shadow-gray-200">
-            <div className="flex gap-4 justify-between">
-              <div>
-                <p className="text-xl font-medium">Overview</p>
-                <p className="text-gray-500 text-sm">
-                  Your store overall performance and metrics.
-                </p>
+          <div className="flex-[5] space-y-4">
+            <div className="border rounded-md p-4 space-y-4 shadow shadow-gray-200">
+              <div className="flex gap-4 justify-between">
+                <div>
+                  <p className="text-xl font-medium">Business Overview</p>
+                  <p className="text-gray-500 text-sm">
+                    Your store overall performance and metrics.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <SmallContentBox
+                  boxBg="#e0f2fe"
+                  iconColor="#0369a1"
+                  icon={"₦"}
+                  value={data.orders_count}
+                  boxKey="Orders"
+                />
+
+                <SmallContentBox
+                  boxBg="#fef2f2"
+                  iconColor="#b91c1c"
+                  icon={<CiMoneyBill />}
+                  value={data.total_products_sold.toLocaleString()}
+                  boxKey="Products Sold"
+                />
+
+                <SmallContentBox
+                  boxBg="#ffe10320"
+                  iconColor="#ffe103"
+                  icon={<PiUsersFour />}
+                  value={data?.new_customers.toLocaleString()}
+                  boxKey="New Customers"
+                />
+
+                <SmallContentBox
+                  boxBg="#f0fff3"
+                  iconColor="#154d22"
+                  icon={<TbWorldWww />}
+                  value={data?.websites_visits_count.toLocaleString()}
+                  boxKey="Website Visits"
+                />
+              </div>
+
+              <div className="flex items-center text-gray-400 justify-between gap-8 py-4">
+                <div className="h-[1px] bg-gray-200 flex-grow"></div>
+
+                <p className="tracking-[.3em] text-xs">OVERVIEW</p>
+
+                <div className="h-[1px] bg-gray-200 flex-grow"></div>
+              </div>
+
+              <div className="grid grid-cols-5 gap-8">
+                <div className="space-y-2">
+                  <div className="size-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                    <TbCurrencyNaira size={22} />
+                  </div>
+
+                  <p className="text-xs font-semibold text-gray-400">
+                    Total Sales
+                  </p>
+
+                  <p className="text-lg font-medium">
+                    {formatNaira(data.total_sales_amount || 0)}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="size-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                    <GiArcheryTarget size={22} />
+                  </div>
+
+                  <p className="text-xs font-semibold text-gray-400">
+                    Offline Sales
+                  </p>
+
+                  <p className="text-lg font-medium">{data.offlineSales}</p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="size-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                    <BiDonateHeart size={22} />
+                  </div>
+
+                  <p className="text-xs font-semibold text-gray-400">
+                    Total Settled
+                  </p>
+
+                  <p className="text-lg font-medium">
+                    {formatNaira(data.totalSettled || 0)}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="size-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                    <GiTakeMyMoney size={22} />
+                  </div>
+
+                  <p className="text-xs font-semibold text-gray-400">
+                    Total Owed
+                  </p>
+
+                  <p className="text-lg font-medium">
+                    {formatNaira(data.totalOwed || 0)}
+                  </p>
+                </div>
               </div>
             </div>
+
+            <div className="border rounded-md p-4 space-y-4 shadow shadow-gray-200">
+              <div>
+                <p className="text-xl font-medium">Recent Orders</p>
+                <p className="text-gray-500 text-sm">
+                  View your recent orders and their status.
+                </p>
+              </div>
+
+              <RecentOrdersTable data={data.recentOrders} loading={isLoading} />
+            </div>
           </div>
-          <div className="flex-1 space-y-3">
-            <div className="border rounded-md p-5 shadow shadow-gray-200"></div>
+
+          <div className="flex-[2] space-y-3">
+            <div className="border rounded-md p-5 shadow shadow-gray-200">
+              <p className="text-xl font-medium text-gray-600">
+                Top Sales Channels
+              </p>
+
+              {!data.topChannels ? (
+                <div className="min-h-[8rem] flex text-center items-center justify-center">
+                  <div className="space-y-2">
+                    <p className="text-gray-400 text-xs">
+                      No sales data available
+                    </p>
+
+                    <Button
+                      className="text-xs px-3 py-1.5 mx-auto"
+                      onClick={() => router.push("/orders/new")}
+                    >
+                      Create order
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <PieChart>
+                      <Pie
+                        data={topChannels}
+                        dataKey="total"
+                        nameKey="_id"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                      >
+                        {topChannels.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+
+                  <div className="flex flex-wrap justify-center space-x-4">
+                    {topChannels.map((entry, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{
+                            backgroundColor: COLORS[index % COLORS.length],
+                          }}
+                        ></div>
+                        <span className="text-sm text-gray-600">
+                          {entry._id}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="border rounded-md p-3 shadow shadow-gray-200 space-y-3">
+              <p className="font-medium text-sm">Quick Actions</p>
+
+              <div className="space-y-1">
+                {quickActions.map((action, index) => (
+                  <div key={index}>
+                    <Link
+                      href={action.href}
+                      className="p-3 bg-gray-50 text-sm font-semibold text-secondary rounded-lg flex items-center gap-2"
+                    >
+                      {action.icon} <span>{action.name}</span>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -164,6 +369,20 @@ const Dashboard = () => {
         </div>
       </section>
     </main>
+  );
+};
+
+const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
+  active,
+  payload,
+}) => {
+  if (!active || !payload || payload.length === 0) return null;
+
+  return (
+    <div className="bg-white py-2 px-3 shadow-md rounded-lg border border-gray-200">
+      <p className="text-sm font-semibold text-gray-700">{payload[0].name}</p>
+      <p className="text-sm text-gray-500">Sales: {payload[0].value}</p>
+    </div>
   );
 };
 

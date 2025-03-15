@@ -17,13 +17,17 @@ import { fadeToBottomVariant } from "@/lib/data/variants";
 import useUserInfo from "@/lib/hooks/useUserInfo";
 import { useModal } from "@/lib/providers/ModalProvider";
 import UpgradePlanModal from "./update-plan-modal";
+import Link from "next/link";
+import useTheme from "@/lib/store/theme.store";
+import { IoSunnyOutline } from "react-icons/io5";
+import { AiOutlineMoon } from "react-icons/ai";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
 const DashboardNavbar = () => {
   const { user } = useUserStore();
-  const { toggleSidebar, sidebarOpen } = useAppStore();
-
+  const { toggleSidebar } = useAppStore();
+  const { isDark, toggleDarkMode } = useTheme();
   const { dropdownRef, isOpen, toggleDropdown } = useDropDown();
 
   const { showModal } = useModal();
@@ -65,70 +69,87 @@ const DashboardNavbar = () => {
           </div>
         </div>
 
-        <div className="relative" ref={dropdownRef} onClick={toggleDropdown}>
-          <div className="flex items-center justify-between gap-2 text-[.9rem] hover:bg-secondary/5 cursor-pointer p-2 rounded-md duration-100 relative">
-            <Image
-              alt="store-logo"
-              src={user?.store?.logo!}
-              width={30}
-              height={30}
-              className="w-[30px] h-[30px] rounded-full border border-secondary"
-            />
-            <p className="capitalize">{user?.store?.name}</p>
+        <div className="flex items-center gap-3">
+          <button
+            className="size-10 border rounded-full flex items-center justify-center"
+            onClick={toggleDarkMode}
+          >
+            {isDark ? <IoSunnyOutline /> : <AiOutlineMoon />}
+          </button>
 
-            <span className="text-[1.2rem] text-gray-500">
-              <BiChevronDown
-                className={cn(
-                  isOpen ? "-rotate-180" : "rotate-360",
-                  "transition-all duration-200"
-                )}
-              />
-            </span>
+          <div>
+            <Link href={store_link} target="_blank">
+              <button className="text-xs font-medium text-primary px-4 py-1.5 border border-primary rounded-md bg-gray-50">
+                View Store
+              </button>
+            </Link>
           </div>
 
-          {isOpen && (
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                {...fadeToBottomVariant}
-                className="absolute rounded-md shadow-xl bg-white z-[4] top-[105%] max-w-[300px] right-0 border text-[.9rem] w-screen"
-              >
-                <li className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent hover:border-l-2 duration-300 p-2 hover:bg-secondary/5 hover:text-secondary">
-                  <LuCircleUser size={20} /> Profile
-                </li>
+          <div className="relative" ref={dropdownRef} onClick={toggleDropdown}>
+            <div className="flex items-center justify-between gap-2 text-[.9rem] hover:bg-secondary/5 cursor-pointer p-2 rounded-md duration-100 relative">
+              <Image
+                alt="store-logo"
+                src={user?.store?.logo!}
+                width={30}
+                height={30}
+                className="w-[30px] h-[30px] rounded-full border border-secondary"
+              />
+              <p className="capitalize">{user?.store?.name}</p>
 
-                <li className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent hover:border-l-2 duration-300 p-2 hover:bg-secondary/5 hover:text-secondary">
-                  <LuStore size={20} /> Store Details
-                </li>
+              <span className="text-[1.2rem] text-gray-500">
+                <BiChevronDown
+                  className={cn(
+                    isOpen ? "-rotate-180" : "rotate-360",
+                    "transition-all duration-200"
+                  )}
+                />
+              </span>
+            </div>
 
-                <li
-                  onClick={() =>
-                    copyToClipboard(
-                      store_link,
-                      "Store link copied successfully"
-                    )
-                  }
-                  className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent hover:border-l-2 duration-300 p-2 hover:bg-secondary/5 hover:text-secondary"
+            {isOpen && (
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  {...fadeToBottomVariant}
+                  className="absolute rounded-lg shadow-2xl bg-white top-[105%] max-w-[300px] right-0 border text-[.9rem] w-60"
                 >
-                  <LuClipboardCopy size={20} /> Copy Store Link
-                </li>
+                  <li className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent duration-300 p-2 hover:bg-secondary/5 hover:text-secondary">
+                    <LuCircleUser size={20} /> Profile
+                  </li>
 
-                <li
-                  onClick={() =>
-                    copyToClipboard(
-                      store_link,
-                      "Business ID copied successfully"
-                    )
-                  }
-                  className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent hover:border-l-2 duration-300 p-2 hover:bg-secondary/5 hover:text-secondary"
-                >
-                  <PiStorefront size={20} /> Business ID:
-                  <span className="text-secondary font-bold">
-                    {user?.store?.store_business_id}
-                  </span>
-                </li>
-              </motion.div>
-            </AnimatePresence>
-          )}
+                  <li className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent duration-300 p-2 hover:bg-secondary/5 hover:text-secondary">
+                    <LuStore size={20} /> Store Details
+                  </li>
+
+                  <li
+                    onClick={() =>
+                      copyToClipboard(
+                        store_link,
+                        "Store link copied successfully"
+                      )
+                    }
+                    className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent duration-300 p-2 hover:bg-secondary/5 hover:text-secondary"
+                  >
+                    <LuClipboardCopy size={20} /> Copy Store Link
+                  </li>
+
+                  <li
+                    onClick={() =>
+                      copyToClipboard(
+                        store_link,
+                        "Business ID copied successfully"
+                      )
+                    }
+                    className="cursor-pointer flex items-center gap-2 w-full hover:border-l-secondary border-4 border-transparent duration-300 p-2 hover:bg-secondary/5 hover:text-secondary"
+                  >
+                    <PiStorefront size={20} /> Business ID:
+                    <span className="text-secondary font-bold">
+                      {user?.store?.store_business_id}
+                    </span>
+                  </li>
+                </motion.div>
+              </AnimatePresence>
+            )}
+          </div>
         </div>
       </div>
     </nav>

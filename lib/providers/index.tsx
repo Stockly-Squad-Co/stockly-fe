@@ -6,11 +6,12 @@ import { SessionProvider } from "next-auth/react";
 import ModalProvider from "./ModalProvider";
 import { Toaster } from "sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import AuthProvider from "./AuthProvider";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import SidebarProvider from "./SideDrawersProvider";
+import useTheme from "../store/theme.store";
 
 gsap.registerPlugin(useGSAP);
 
@@ -21,6 +22,16 @@ interface Props {
 export const queryClient = new QueryClient();
 
 const Providers = ({ children }: Props) => {
+  const { isDark } = useTheme();
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
   return (
     <SessionProvider>
       <AuthProvider>
