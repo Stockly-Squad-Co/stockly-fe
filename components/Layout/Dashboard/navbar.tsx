@@ -71,7 +71,7 @@ const DashboardNavbar = () => {
 
         <div className="flex items-center gap-3">
           <button
-            className="size-10 border rounded-full flex items-center justify-center"
+            className="size-8 border rounded-full flex items-center justify-center"
             onClick={toggleDarkMode}
           >
             {isDark ? <IoSunnyOutline /> : <AiOutlineMoon />}
