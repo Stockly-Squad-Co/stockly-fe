@@ -1,16 +1,16 @@
 // import { features } from "@/lib/data";
 // import { cn } from "@/lib/utils/cn";
-import Link from "next/link";
-import { FaOpencart } from "react-icons/fa";
-import { FiBarChart, FiCreditCard } from "react-icons/fi";
-import { IoMdArrowForward } from "react-icons/io";
+import Link from 'next/link';
+import { FaOpencart } from 'react-icons/fa';
+import { FiBarChart, FiCreditCard } from 'react-icons/fi';
+import { IoMdArrowForward } from 'react-icons/io';
 
 const Features = () => {
   return (
     <section className="py-16 container bg-white space-y-12">
-      <div className="bg-gray-100 flex items-center justify-center text-xl text-gray-400 h-[35rem]">
+      {/* <div className="bg-gray-100 flex items-center justify-center text-xl text-gray-400 h-[35rem]">
         SCREENSHOT
-      </div>
+      </div> */}
 
       <div>
         <div className="flex 2xl:gap-20 gap-16">
