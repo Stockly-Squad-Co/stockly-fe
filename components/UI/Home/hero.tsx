@@ -10,15 +10,21 @@ const Hero = () => {
   return (
     <section className="2xl:py-28 py-28 grid grid-cols-2 gap-4 items-center container">
       <div className="max-w-3xl xl:max-w-4xl">
-        <div className="space-y-5">
-          <h1 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-extrabold text-primary leading-relaxed">
-            Manage Your Store{" "}
-            <span className="text-secondary">Effortlessly</span>
-          </h1>
-          <p className="text-lg text-text mt-4 max-w-xl mx-auto md:mx-0">
-            Track inventory, process payments, and grow your business with an
-            all-in-one platform.
-          </p>
+        <div>
+          <div className="space-y-5">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-extrabold text-primary leading-relaxed">
+              Manage Your Store{" "}
+              <span className="text-secondary">Effortlessly</span>
+            </h1>
+            <p className="text-lg text-text mt-4 max-w-xl mx-auto md:mx-0">
+              Track inventory, process payments, and grow your business with an
+              all-in-one platform.
+            </p>
+            <p className="text-sm text-gray-500 flex items-center gap-1">
+              <span>Powered by</span>{" "}
+              <Image src="/squad.png" alt="" width={60} height={20} />
+            </p>
+          </div>
         </div>
 
         <div className="mt-6 flex justify-center md:justify-start space-x-4">
