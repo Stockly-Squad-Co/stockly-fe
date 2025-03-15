@@ -32,6 +32,8 @@ import ConfirmationModal from '@/components/Common/Modal/confirmation-modal';
 import { queryClient } from '@/lib/providers';
 import { useSidebar } from '@/lib/providers/SideDrawersProvider';
 import PaymentLinkSidebar from './payment-link-sidebar';
+import PaymentLinkModal from './payment-link-modal';
+import { FaRegPaperPlane } from 'react-icons/fa';
 
 const SingleOrderPage = () => {
   const { showModal } = useModal();
@@ -95,6 +97,12 @@ const SingleOrderPage = () => {
           <BackButton />
           <h1 className="font-bold text-[1.2rem]">Order Details</h1>
         </div>
+
+        {order?.paymentStatus !== OrderPaymentStatus.PAID && (
+          <Button className="" icon={<FaRegPaperPlane />}>
+            Send Invoice
+          </Button>
+        )}
       </header>
 
       <div className="flex gap-6">

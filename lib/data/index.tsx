@@ -352,3 +352,30 @@ export const randomWords = [
   "Support",
   "Automation",
 ];
+
+export const quickActions: {
+  icon: React.ReactNode;
+  name: string;
+  href: string;
+}[] = [
+  {
+    icon: <FiCreditCard className="text-secondary" size={20} />,
+    name: "Add a new product",
+    href: "/products/new",
+  },
+  {
+    icon: <FiShoppingCart className="text-secondary" size={20} />,
+    name: "Create new order",
+    href: "/orders/new",
+  },
+  {
+    icon: <FiBarChart className="text-secondary" size={20} />,
+    name: "Create an Expense",
+    href: "/expenses/create",
+  },
+  {
+    icon: <FiShoppingCart className="text-secondary" size={20} />,
+    name: "Contact Support",
+    href: "#",
+  },
+];
