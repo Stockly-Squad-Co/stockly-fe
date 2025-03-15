@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 import {
   CollectionStatus,
+  DiscountStatus,
   OrderPaymentStatus,
   OrderStatus,
   PaymentMethod,
@@ -9,9 +10,9 @@ import {
   ProductUnits,
   SalesChannel,
   ShippingStatus,
-} from "../enums";
+} from '../enums';
 
-import { ExpenseFrequency, ExpenseStatus, ExpensesType } from "../utils/enums";
+import { ExpenseFrequency, ExpenseStatus, ExpensesType } from '../utils/enums';
 
 export interface ApiResponse<T = any, M = any> {
   status: boolean;
@@ -26,13 +27,13 @@ export interface TabsDto {
 }
 
 export type DateRange =
-  | "today"
-  | "yesterday"
-  | "this-week"
-  | "last-week"
-  | "this-month"
-  | "last-month"
-  | "custom";
+  | 'today'
+  | 'yesterday'
+  | 'this-week'
+  | 'last-week'
+  | 'this-month'
+  | 'last-month'
+  | 'custom';
 
 /** dtos */
 export interface CreateCustomer {
@@ -65,6 +66,15 @@ export interface CreateProduct {
   unit_value: number;
 }
 
+export interface CreateDiscount {
+  name: string;
+  type: 'FIXED' | 'PERCENTAGE';
+  value: number;
+  startDate: Date;
+  endDate: Date;
+  products: Product[];
+}
+
 /** db types */
 
 export type Address = {
@@ -86,7 +96,7 @@ export type Customer = {
   additional_information: string;
   profilePicture: string;
   customer_code: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: 'ACTIVE' | 'INACTIVE';
   shipping_address: Address;
   createdAt: string;
   purchase_history: PurchaseHistory[];
@@ -217,7 +227,7 @@ export interface Order {
     email: string;
   };
   orderDate: string;
-  type: "PICKUP" | "DELIVERY";
+  type: 'PICKUP' | 'DELIVERY';
   address: {
     state: string;
     city: string;
@@ -255,7 +265,7 @@ export type StoreOrder = {
   discountAmount: number;
   subtotal: number;
   paymentMethod: PaymentMethod;
-  type: "PICKUP" | "DELIVERY";
+  type: 'PICKUP' | 'DELIVERY';
   cart: Cart[];
   shipping_address: Address;
   transaction?: {
@@ -276,14 +286,26 @@ export interface Transaction {
     lastName: string;
   };
   amount: number;
-  status: "SUCCESSFUL" | "PENDING" | "FAILED";
-  direction: "INFLOW" | "OUTFLOW";
+  status: 'SUCCESSFUL' | 'PENDING' | 'FAILED';
+  direction: 'INFLOW' | 'OUTFLOW';
   order: {
     _id: string;
     salesChannel: string;
     sku: string;
   };
   createdAt: string;
+}
+
+export interface TransactionOverview {
+  totalOffline: number;
+  totalOnline: number;
+  totalPayouts: number;
+  totalWithdraws: number;
+}
+
+export interface Wallet {
+  _id: string;
+  balance: number;
 }
 
 export interface Expense {
@@ -333,11 +355,36 @@ export interface ExpenseFormValues {
   payee: Payee;
 }
 
-export type OrderType = "PUBLISHED" | "UNPUBLISHED" | "DELETED";
+export type Discount = {
+  _id: string;
+  name: string;
+  type: 'PERCENTAGE' | 'FIXED';
+  value: number;
+  status: DiscountStatus;
+  totalProducts: number;
+  products: Product[];
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+};
 
-export type OrderStock = "lowStock" | "outOfStock" | "inStock";
+export type GeneratePaymentLink = {
+  link: string;
+  qrCode: string;
+  virtual_account: {
+    account_name: string;
+    account_number: string;
+    transaction_reference: string;
+    expected_amount: number;
+    bank: 'GTBank';
+    expires_at: Date;
+  };
+};
+export type OrderType = 'PUBLISHED' | 'UNPUBLISHED' | 'DELETED';
 
-export type OrderPickupType = "PICKUP" | "DELIVERY";
+export type OrderStock = 'lowStock' | 'outOfStock' | 'inStock';
+
+export type OrderPickupType = 'PICKUP' | 'DELIVERY';
 
 export interface CreateOrder {
   cart: { product: string; quantity: number }[];

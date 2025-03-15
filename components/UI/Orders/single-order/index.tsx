@@ -1,39 +1,47 @@
-"use client";
-import BackButton from "@/components/Common/Button/back-button";
-import Skeleton from "@/components/Layout/Skeleton";
+'use client';
+import BackButton from '@/components/Common/Button/back-button';
+import Skeleton from '@/components/Layout/Skeleton';
 import {
   generateOrderPaymentLink,
   getOrder,
   updateOrderShippingStatus,
-} from "@/lib/services/order.service";
-import { copyToClipboard, formatDate, formatNaira } from "@/lib/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import React from "react";
-import DetailsChip from "./details-chip";
-import OrderStatusChip from "@/components/Common/Status/order-status";
-import OrderPaymentStatusChip from "@/components/Common/Status/order-payment-status";
-import ShippingStatusChip from "@/components/Common/Status/shipping-status";
-import { BiCopy, BiEnvelope, BiPhone } from "react-icons/bi";
-import { FaWhatsapp } from "react-icons/fa6";
-import Image from "next/image";
-import { OrderPaymentStatus, SalesChannel, ShippingStatus } from "@/lib/enums";
-import Button from "@/components/Common/Button";
-import { useModal } from "@/lib/providers/ModalProvider";
-import RecordPaymentModal from "./record-payment-modal";
-import { toast } from "sonner";
-import PaymentLinkModal from "./payment-link-modal";
-import { cn } from "@/lib/utils/cn";
-import ConfirmationModal from "@/components/Common/Modal/confirmation-modal";
-import { queryClient } from "@/lib/providers";
-import { FaRegPaperPlane } from "react-icons/fa";
+} from '@/lib/services/order.service';
+import { copyToClipboard, formatDate, formatNaira } from '@/lib/utils';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import React from 'react';
+import DetailsChip from './details-chip';
+import OrderStatusChip from '@/components/Common/Status/order-status';
+import OrderPaymentStatusChip from '@/components/Common/Status/order-payment-status';
+import ShippingStatusChip from '@/components/Common/Status/shipping-status';
+import { BiCopy, BiEnvelope, BiPhone } from 'react-icons/bi';
+import { FaWhatsapp } from 'react-icons/fa6';
+import Image from 'next/image';
+import {
+  OrderPaymentStatus,
+  OrderStatus,
+  SalesChannel,
+  ShippingStatus,
+} from '@/lib/enums';
+import Button from '@/components/Common/Button';
+import { useModal } from '@/lib/providers/ModalProvider';
+import RecordPaymentModal from './record-payment-modal';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils/cn';
+import ConfirmationModal from '@/components/Common/Modal/confirmation-modal';
+import { queryClient } from '@/lib/providers';
+import { useSidebar } from '@/lib/providers/SideDrawersProvider';
+import PaymentLinkSidebar from './payment-link-sidebar';
+import PaymentLinkModal from './payment-link-modal';
+import { FaRegPaperPlane } from 'react-icons/fa';
 
 const SingleOrderPage = () => {
   const { showModal } = useModal();
+  const { showSidebar } = useSidebar();
   const { id } = useParams();
 
   const { data: order, isLoading } = useQuery({
-    queryKey: ["orders", id],
+    queryKey: ['orders', id],
     queryFn: () => getOrder(id as string),
   });
 
@@ -41,7 +49,7 @@ const SingleOrderPage = () => {
   const fullShippingAddress =
     order?.salesChannel === SalesChannel.Ussd
       ? order?.shipping_address?.street_address
-      : `${order?.shipping_address?.street_address ?? " "}, ${
+      : `${order?.shipping_address?.street_address ?? ' '}, ${
           order?.shipping_address?.city
         }, ${order?.shipping_address?.state?.name}, Nigeria, ${
           order?.shipping_address?.zip_code
@@ -49,11 +57,11 @@ const SingleOrderPage = () => {
 
   const { isPending: generatingPaymentLink, mutateAsync: generatePaymentLink } =
     useMutation({
-      mutationKey: ["orders", id, "payment-link"],
+      mutationKey: ['orders', id, 'payment-link'],
       mutationFn: () => generateOrderPaymentLink(order?._id!),
       onSuccess(data) {
-        toast.success("Payment link generated successfully");
-        showModal(<PaymentLinkModal link={data?.link} qrCode={data?.qrCode} />);
+        toast.success('Payment link generated successfully');
+        showSidebar(<PaymentLinkSidebar data={data} order_id={order?._id!} />);
       },
       onError(error) {
         toast.error(error.message);
@@ -64,15 +72,15 @@ const SingleOrderPage = () => {
     isPending: updatingShippingStatus,
     mutateAsync: updateShippingStatus,
   } = useMutation({
-    mutationKey: ["orders", id, "shipping-status"],
+    mutationKey: ['orders', id, 'shipping-status'],
     mutationFn: (status: ShippingStatus) =>
       updateOrderShippingStatus(order?._id!, status),
     onSuccess() {
-      toast.success("Shipping Status updated successfully");
+      toast.success('Shipping Status updated successfully');
       queryClient.invalidateQueries({
         predicate(query) {
           return (
-            query.queryKey.includes("orders") &&
+            query.queryKey.includes('orders') &&
             query.queryKey.includes(order?._id)
           );
         },
@@ -214,7 +222,7 @@ const SingleOrderPage = () => {
                     <div className="flex items-center gap-2">
                       <Image
                         src={c.product?.display_image}
-                        alt={"product image"}
+                        alt={'product image'}
                         width={100}
                         height={100}
                         className="w-[100px] h-[100px] rounded-md object-cover object-center"
@@ -301,8 +309,8 @@ const SingleOrderPage = () => {
                 <OrderPaymentStatusChip status={order?.paymentStatus!} />
               </p>
             </div>
-
-            {order?.paymentStatus != OrderPaymentStatus.PAID ? (
+            {order?.paymentStatus != OrderPaymentStatus.PAID &&
+            order?.orderStatus != OrderStatus.CANCELLED ? (
               <div className="flex items-center mt-6 gap-2">
                 <Button
                   variant="outline"
@@ -336,7 +344,7 @@ const SingleOrderPage = () => {
               <p className="text-[.9rem] font-semibold text-gray-500 flex items-center gap-2">
                 Address
                 <BiCopy
-                  cursor={"pointer"}
+                  cursor={'pointer'}
                   onClick={() => copyToClipboard(fullShippingAddress)}
                 />
               </p>
@@ -375,10 +383,10 @@ const SingleOrderPage = () => {
                       }
                     }}
                     className={cn(
-                      "rounded-lg border capitalize min-w-fit max-w-fit flex-1 text-[.85rem] p-2 cursor-pointer",
+                      'rounded-lg border capitalize min-w-fit max-w-fit flex-1 text-[.85rem] p-2 cursor-pointer',
                       s === order?.shippingStatus &&
-                        "bg-blue-50 text-blue-700 border-blue-700",
-                      updatingShippingStatus && "animate-pulse"
+                        'bg-blue-50 text-blue-700 border-blue-700',
+                      updatingShippingStatus && 'animate-pulse'
                     )}
                     key={s}
                   >

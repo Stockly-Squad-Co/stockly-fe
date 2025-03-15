@@ -1,45 +1,46 @@
 import {
   Address,
   ApiResponse,
-  CreateOrder,
+  GeneratePaymentLink,
   OrderOverview,
   StoreOrder,
-} from "../@types";
-import { authApi } from "../configs/axios-instance";
-import { PaymentMethod, ShippingStatus } from "../enums";
+  CreateOrder,
+} from '../@types';
+import { authApi } from '../configs/axios-instance';
+import { PaymentMethod, ShippingStatus } from '../enums';
 
 export const getOrdersOverview = async () => {
   try {
     const response = await authApi.get<ApiResponse<OrderOverview>>(
-      "/order/overview"
+      '/order/overview'
     );
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
 export const getOrders = async () => {
   try {
-    const response = await authApi.get<ApiResponse<StoreOrder[]>>("/order");
+    const response = await authApi.get<ApiResponse<StoreOrder[]>>('/order');
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
 export const createOrder = async (body: CreateOrder) => {
   try {
     const response = await authApi.post<ApiResponse<StoreOrder>>(
-      "/order",
+      '/order',
       body
     );
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -49,7 +50,7 @@ export const getOrder = async (id: string) => {
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -65,7 +66,7 @@ export const updateShippingAddress = async (
 
     return response?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -80,7 +81,7 @@ export const updateOrderShippingStatus = async (
 
     return response?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
@@ -95,18 +96,18 @@ export const updatePaymentStatus = async (
 
     return response?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
 
 export const generateOrderPaymentLink = async (id: string) => {
   try {
-    const response = await authApi.get<
-      ApiResponse<{ link: string; qrCode: string }>
-    >(`/order/${id}/payment-link`);
+    const response = await authApi.get<ApiResponse<GeneratePaymentLink>>(
+      `/order/${id}/payment-link`
+    );
 
     return response?.data?.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.msg || "Something went wrong");
+    throw new Error(error?.response?.data?.msg || 'Something went wrong');
   }
 };
